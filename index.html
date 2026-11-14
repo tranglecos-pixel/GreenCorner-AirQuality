@@ -303,6 +303,13 @@
   #man-welcome .wc-nguon summary { justify-content: center; gap: 6px; padding: 6px 10px; color: var(--vien); }
   #man-welcome .wc-nguon summary::after { margin-left: 0; }
   #man-welcome .wc-nguon-noi-dung { padding: 4px 4px 0; }
+  /* Hộp nhạc: nghe 1 thành phố cả mùa hè */
+  .jb-tp { display: flex; flex-direction: column; gap: 8px; }
+  .jb-tp-hang { display: flex; gap: 8px; }
+  .jb-tp-hang select { flex: 1; min-width: 0; font: inherit; font-size: 1rem; padding: 10px 12px; border-radius: 14px; border: 2px solid #b7e4c7; background: #fff; color: var(--chu); }
+  .jb-tp-hang .nut { width: auto; max-width: none; padding: 10px 16px; font-size: 1rem; white-space: nowrap; }
+  .jb-tp-tien { height: 6px; border-radius: 3px; background: #e9ecef; overflow: hidden; }
+  .jb-tp-tien i { display: block; height: 100%; width: 0; background: var(--o3); transition: width .1s linear; }
 </style>
 </head>
 <body>
@@ -439,12 +446,21 @@
       <span class="ngay" id="jb-ngay"></span>
       <input type="range" id="jb-thanh" min="0" max="0" value="0" data-i18n-aria="jb_thanh" aria-label="Chọn thời điểm">
     </div>
+    <div class="the jb-tp">
+      <h3 data-i18n="jb_tp_tieu_de">🏙️ Không khí qua một thành phố</h3>
+      <p class="phu" data-i18n="jb_tp_goi_y">Nghe không khí ở đó thay đổi suốt mùa hè: mỗi nốt là 6 giờ, 4 nốt là một ngày.</p>
+      <div class="jb-tp-hang">
+        <select id="jb-tp" data-i18n-aria="jb_tp_chon" aria-label="Chọn thành phố"></select>
+        <button class="nut nut-tim" id="jb-tp-phat" type="button">▶</button>
+      </div>
+      <div class="jb-tp-tien" aria-hidden="true"><i id="jb-tp-vach"></i></div>
+    </div>
+    <div class="the" id="jb-the" aria-live="polite"></div>
     <div class="hang-nut">
       <button class="nut nut-xanh" id="jb-phat" type="button" style="max-width:150px">▶</button>
       <button class="nut-nho" id="jb-tua" type="button" aria-pressed="false" data-i18n="jb_tua">⏩ Tua thời gian</button>
       <button class="nut-nho" id="jb-cham" type="button" aria-pressed="false" data-i18n="jb_cham">🐢 Chậm</button>
     </div>
-    <div class="the" id="jb-the" aria-live="polite"></div>
     <button class="nut nut-dam" id="nut-hoc" type="button" data-i18n="nut_hoc">📘 Bốn vị khách trong không khí</button>
   </section>
 
@@ -549,20 +565,20 @@ const CHU = {
     tt_ten: "Thám tử không khí", tt_mo_ta: "Theo dõi không khí ở một thành phố qua 75 ngày", ttdt_tieu_de: "🎧 Thử thách đôi tai",
     wc_bo_qua: "⬅ Về", wc_tiep: "Tiếp ➜", wc_bat_dau: "🌍 Bắt đầu hành trình", wc_tedx: "Câu chuyện về góc xanh nhỏ",
     wc_nhan_1: "Câu chuyện của tụi mình",
-    wc_tieu_de_1: "Một <span class=\"noi\">góc xanh</span> nhỏ&nbsp;🌱",
+    wc_tieu_de_1: "Một <span class=\"noi\">góc xanh</span> nhỏ",
     wc_loi_1: "Một bạn trong nhóm đã tự tay vun lên một góc xanh. Nhưng rồi tụi mình nhận ra: cây non cũng cần không khí sạch để thở.<br><b>Vậy không khí trên cả Trái Đất đang thế nào?</b>",
     wc_nhan_2: "Dữ liệu NASA",
-    wc_tieu_de_2: "Nhịp thở <span class=\"noi\">Trái&nbsp;Đất</span>&nbsp;🌏💨",
+    wc_tieu_de_2: "Nhịp thở <span class=\"noi\">Trái&nbsp;Đất</span>",
     wc_loi_2: "Rồi, tụi mình tìm thấy một bản đồ do NASA xây dựng, mô phỏng diễn biến chất lượng không khí trên toàn cầu trong suốt mùa hè năm 2024.",
     wc_so: "<span>🗓️ 1/7 – 14/9/2024</span><span>🎞️ 1.800 khung hình</span><span>🌈 4 dải màu</span>",
     wc_anh_alt: "Một khung hình NASA: bản đồ thế giới với 4 dải màu CO, PM2.5, NOx, O₃",
-    wc_tieu_de_3: "Sẵn sàng <span class=\"noi\">lắng&nbsp;nghe</span>&nbsp;🎧✨",
+    wc_tieu_de_3: "Sẵn sàng <span class=\"noi\">lắng&nbsp;nghe</span>",
     wc_sonification: "🎼 Đó là <b>sonification</b>: âm thanh bạn nghe <b>không phải</b> tiếng thu từ bầu trời, mà là <b>dữ liệu được dịch thành âm thanh</b>. Màu càng đậm, nốt càng cao và càng dày.",
     wc_nghe: "▶ nghe",
     wc_hoi_tai: "Đôi tai của bạn có khám phá được điều mà đôi mắt có thể bỏ lỡ?",
     nguon_nut: "ℹ️ Nguồn dữ liệu NASA", doc_trang: "Nghe Mầm Xanh đọc trang này", ve: "⬅ Về", tiep: "Tiếp ➜", dong: "Đóng", nghe_lai: "🔊 Nghe",
     dang_doc_mau: "Đang đọc màu khung {i}/{n}…", san_sang: "Đã đọc xong {n} khung hình NASA ✓", khong_khung: "Chưa có khung hình nào được nhúng.",
-    ten_chat: ["Cacbon monoxit (CO)", "Bụi mịn (PM2.5)", "Nitơ oxit (NOx)", "Ô-dôn (O₃)"],
+    ten_chat: ["Cacbon monoxit (CO)", "Bụi mịn (PM2.5)", "Nitơ oxit (NOx)", "Ozon (O₃)"],
     ten_ngan: ["CO", "PM2.5", "NOx", "O₃"],
     nhac_cu: ["🎺 kèn trầm", "🌫️ tiếng hạt lạo xạo", "🚗 tiếng gảy điện tử", "🔔 chuông thủy tinh"],
     muc: { khong: "không đọc được", thap: "Thấp", vua: "Vừa", cao: "Cao" },
@@ -570,6 +586,13 @@ const CHU = {
     jb_goi_y: "Bấm ▶ để vạch trắng quét qua bản đồ. Mỗi chất có một nhạc cụ; màu càng đậm thì nốt càng cao, càng dày. Chạm vào bản đồ để nghe một điểm.",
     jb_thanh: "Chọn thời điểm", jb_cham: "🐢 Chậm", jb_tua: "⏩ Tua thời gian",
     jb_tua_goi_y: "Đang tua. Chạm một điểm trên bản đồ để nghe điểm đó thay đổi theo thời gian.",
+    jb_tp_tieu_de: "🏙️ Không khí qua một thành phố",
+    jb_tp_goi_y: "Nghe không khí ở đó thay đổi suốt mùa hè: mỗi nốt là 6 giờ, 4 nốt là một ngày.",
+    jb_tp_chon: "Chọn thành phố", jb_tp_phat: "▶ Nghe", jb_tp_dung: "■ Dừng",
+    vung: ["Châu Á", "Châu Âu", "Châu Phi", "Bắc Mỹ", "Nam Mỹ"],
+    jb_tp_dang: "📍 <b>{tp}</b> · {ngay}<br>Đang nằm trong dải <b>{chat}</b> · {nhac}<br>Mức màu: <span class=\"muc muc-{lop}\">{muc}</span>",
+    jb_tp_nghi: "📍 <b>{tp}</b> · {ngay}<br>Mép dải màu, không đọc được (nghỉ một nhịp).",
+    jb_tp_xong: "🎵 Hết mùa hè ở <b>{tp}</b>!<br>",
     jb_ngay: "Khung {so} · ≈ {ngay}",
     jb_dang: "Đang quét: <b>{chat}</b> · kinh độ {kinh} · đậm nhất ở {vi} ({muc})",
     jb_mo_dau: "Bấm ▶ hoặc chạm vào bản đồ. Dùng phím mũi tên để di chuyển, Enter để nghe.",
@@ -587,8 +610,8 @@ const CHU = {
     hoc_chat: [
       { mo_ta: "Khí không màu, không mùi. Hít nhiều làm máu khó mang ô-xy đi nuôi cơ thể.", nguon: "Đốt cháy không hết: cháy rừng, xe cộ, bếp than.", ban_do: "Vàng nhạt = ít, đỏ sẫm = nhiều. Tháng 7–8/2024 có vệt đỏ lớn trên Canada và Bắc Mỹ – mùa cháy rừng." },
       { mo_ta: "Hạt bụi nhỏ hơn 2,5 micromet – nhỏ hơn sợi tóc khoảng 20–30 lần, có thể đi sâu vào phổi.", nguon: "Khói cháy, xe cộ, nhà máy, bụi sa mạc.", ban_do: "Kem = ít, nâu = nhiều. Thử tìm vệt nâu bay từ châu Phi ra Đại Tây Dương." },
-      { mo_ta: "Nhóm khí NO và NO₂. Góp phần tạo ô-dôn mặt đất và mưa axit.", nguon: "Đốt nhiên liệu ở nhiệt độ cao: xe cộ, nhà máy điện, tàu thuyền.", ban_do: "Xanh nhạt = ít, xanh sẫm = nhiều; vùng xám/đen là gần như không có. Thử tìm những đường thẳng mờ trên biển." },
-      { mo_ta: "Trên cao, ô-dôn che tia cực tím. Sát mặt đất, ô-dôn lại là chất gây hại cho phổi và cây trồng.", nguon: "Không thải ra trực tiếp: hình thành khi NOx và hơi hữu cơ gặp nắng mạnh.", ban_do: "Xám = ít, tím xanh đậm = nhiều. Mùa hè nắng nhiều nên Bắc Mỹ, châu Âu, châu Á có màu tím đậm." }
+      { mo_ta: "Nhóm khí NO và NO₂. Góp phần tạo Ozon mặt đất và mưa axit.", nguon: "Đốt nhiên liệu ở nhiệt độ cao: xe cộ, nhà máy điện, tàu thuyền.", ban_do: "Xanh nhạt = ít, xanh sẫm = nhiều; vùng xám/đen là gần như không có. Thử tìm những đường thẳng mờ trên biển." },
+      { mo_ta: "Trên cao, Ozon che tia cực tím. Sát mặt đất, Ozon lại là chất gây hại cho phổi và cây trồng.", nguon: "Không thải ra trực tiếp: hình thành khi NOx và hơi hữu cơ gặp nắng mạnh.", ban_do: "Xám = ít, tím xanh đậm = nhiều. Mùa hè nắng nhiều nên Bắc Mỹ, châu Âu, châu Á có màu tím đậm." }
     ],
     hoc_luu_y: "💡 <b>Lưu ý cho thám tử:</b> NASA không công bố thang màu kèm đơn vị cho video này, nên app chỉ so <b>đậm – nhạt</b> trên cùng bản đồ (mức tương đối), không ghi ppb hay µg/m³. <b>Thấp</b> = nhạt hơn một nửa bản đồ; <b>Cao</b> = thuộc 15% chỗ đậm nhất của chất đó. Mỗi chất dùng một thang màu riêng: không so CO “Cao” với O₃ “Cao”.",
     game_tieu_de: "🎮 Games",
@@ -603,13 +626,13 @@ const CHU = {
     het_game: "🎉 Xong! Bạn được {sao}/{tong} ⭐", choi_lai: "🔄 Chơi lại",
     tong_sao: "⭐ Tổng sao: {sao}",
     nguon_tieu_de: "ℹ️ Dữ liệu từ đâu?",
-    nguon_noi_dung: "<p class=\"wc-nguon-mo-dau\">Mô hình GEOS-CF của NASA theo dõi bốn chất trong không khí: <b>CO, bụi mịn PM2.5, NOx và ô-dôn</b>. Mùa hè 2024, khi cháy rừng bùng lên ở Bắc Mỹ, NASA vẽ chúng thành những dải màu trên bản đồ thế giới.</p><ul><li><b>Khung hình:</b> NASA Scientific Visualization Studio, <a href=\"https://svs.gsfc.nasa.gov/5533\" target=\"_blank\" rel=\"noopener\">“Air Quality Model Runs” (SVS 5533)</a>, bộ <i>AirQuality_MapWithLabels</i> 5760×3240, 1.800 khung.</li><li><b>Mô hình:</b> GEOS-CF (Goddard Earth Observing System Composition Forecasting) của NASA GMAO.</li><li><b>Thời gian:</b> 1/7 – 14/9/2024, mùa cháy rừng Bắc Mỹ. App ước tính mỗi khung = 1 giờ (1.800 khung ÷ 75 ngày); SVS không ghi rõ điều này.</li><li><b>Đồ họa:</b> Helen-Nicole Kostis (USRA), Joseph V. Ardizzone (NASA/GSFC). Tư vấn khoa học: Lesley Ott (NASA/GSFC).</li><li><b>Cách app đọc màu:</b> ảnh được thu nhỏ còn 1152×648; app đo màu từng điểm ngay trên trình duyệt và so với dải màu mẫu của từng chất. Vị trí 4 dải và tọa độ bản đồ (18 điểm ảnh gốc = 1°, kinh độ −180° đến 140°) được đo từ 3 khung PNG gốc, rồi kiểm tra lại trên cả 300 khung của bản này.</li><li><b>Âm thanh:</b> tạo hoàn toàn bằng Web Audio, không dùng file thu sẵn.</li></ul>",
+    nguon_noi_dung: "<p class=\"wc-nguon-mo-dau\">Mô hình GEOS-CF của NASA theo dõi bốn chất trong không khí: <b>CO, bụi mịn PM2.5, NOx và Ozon</b>.</p><ul><li><b>Khung hình:</b> NASA Scientific Visualization Studio, <a href=\"https://svs.gsfc.nasa.gov/5533\" target=\"_blank\" rel=\"noopener\">“Air Quality Model Runs” (SVS 5533)</a>, bộ <i>AirQuality_MapWithLabels</i> 5760×3240, 1.800 khung.</li><li><b>Mô hình:</b> GEOS-CF (Goddard Earth Observing System Composition Forecasting) của NASA GMAO.</li><li><b>Thời gian:</b> 1/7 – 14/9/2024, mùa cháy rừng Bắc Mỹ. App ước tính mỗi khung = 1 giờ (1.800 khung ÷ 75 ngày); SVS không ghi rõ điều này.</li><li><b>Đồ họa:</b> Helen-Nicole Kostis (USRA), Joseph V. Ardizzone (NASA/GSFC). Tư vấn khoa học: Lesley Ott (NASA/GSFC).</li><li><b>Cách app đọc màu:</b> ảnh được thu nhỏ còn 1152×648; app đo màu từng điểm ngay trên trình duyệt và so với dải màu mẫu của từng chất. Vị trí 4 dải và tọa độ bản đồ (18 điểm ảnh gốc = 1°, kinh độ −180° đến 140°) được đo từ 3 khung PNG gốc, rồi kiểm tra lại trên cả 300 khung của bản này.</li><li><b>Âm thanh:</b> tạo hoàn toàn bằng Web Audio, không dùng file thu sẵn.</li></ul>",
     doc: {
       "man-home": "Chào bạn! Mình là Mầm Xanh. Hôm nay mình sẽ nghe bầu trời Trái Đất bằng bản đồ của NASA. Bấm Câu chuyện Mầm Xanh để nghe chuyện của tụi mình, Hộp nhạc mùa hè để nghe bản đồ, hoặc Games để chơi.",
-      "man-jb": "Đây là hộp nhạc mùa hè. Bản đồ có bốn dải màu xen kẽ. Khi bấm phát, vạch trắng quét từ trái sang phải. Kèn trầm là CO, tiếng lạo xạo là bụi mịn, tiếng gảy là NOx, chuông là ô-dôn. Nốt càng cao và càng dày nghĩa là màu càng đậm.",
+      "man-jb": "Đây là hộp nhạc mùa hè. Bản đồ có bốn dải màu xen kẽ. Khi bấm phát, vạch trắng quét từ trái sang phải. Kèn trầm là CO, tiếng lạo xạo là bụi mịn, tiếng gảy là NOx, chuông là Ozon. Nốt càng cao và càng dày nghĩa là màu càng đậm.",
       "man-tt-ds": "Chọn một thành phố để làm thám tử. Mình sẽ xem nhật ký không khí ở đó qua từng ngày.",
       "man-tt": "Đây là nhật ký của thành phố. Mỗi cột là một ngày, màu cột cho biết hôm đó thành phố nằm trong dải chất nào, chiều cao là độ đậm của màu.",
-      "man-hoc": "Bốn vị khách trong không khí là CO, bụi mịn PM2.5, NOx và ô-dôn. Bấm nghe để nhớ nhạc cụ của từng chất.",
+      "man-hoc": "Bốn vị khách trong không khí là CO, bụi mịn PM2.5, NOx và Ozon. Bấm nghe để nhớ nhạc cụ của từng chất.",
       "man-game": "Chọn một trò: làm thám tử không khí, nghe đoán chất, hoặc nghe xem nơi nào nhiều hơn.",
       "man-g1": "Bấm nghe, rồi đoán xem nhạc cụ đó là chất nào.",
       "man-g2": "Nghe nơi A và nơi B. Nơi nào có nốt cao hơn và dày hơn thì màu đậm hơn."
@@ -621,20 +644,20 @@ const CHU = {
     tt_ten: "Air Detective", tt_mo_ta: "Follow the air over one city for 75 days", ttdt_tieu_de: "🎧 Ear Challenge",
     wc_bo_qua: "⬅ Back", wc_tiep: "Next ➜", wc_bat_dau: "🌍 Start the journey", wc_tedx: "The story of a little green corner",
     wc_nhan_1: "Our story",
-    wc_tieu_de_1: "One small <span class=\"noi\">green&nbsp;corner</span>&nbsp;🌱",
+    wc_tieu_de_1: "One small <span class=\"noi\">green&nbsp;corner</span>",
     wc_loi_1: "One of our teammates grew a little green corner by hand. Then we realized: young plants need clean air to breathe, too.<br><b>So how is the air across the whole Earth doing?</b>",
     wc_nhan_2: "NASA data",
-    wc_tieu_de_2: "Earth's <span class=\"noi\">breath</span>&nbsp;🌏💨",
+    wc_tieu_de_2: "Earth's <span class=\"noi\">breath</span>",
     wc_loi_2: "Then we found a map built by NASA that simulates how air quality changed across the globe throughout summer 2024.",
     wc_so: "<span>🗓️ 1 Jul – 14 Sep 2024</span><span>🎞️ 1,800 frames</span><span>🌈 4 color bands</span>",
     wc_anh_alt: "A NASA frame: world map with 4 color bands CO, PM2.5, NOx, O₃",
-    wc_tieu_de_3: "Ready to <span class=\"noi\">listen</span>&nbsp;🎧✨",
+    wc_tieu_de_3: "Ready to <span class=\"noi\">listen</span>",
     wc_sonification: "🎼 This is <b>sonification</b>: the sounds are <b>not</b> recordings of the sky. They are <b>data, translated into sound</b>. Darker color means higher, denser notes.",
     wc_nghe: "▶ listen",
     wc_hoi_tai: "Can your ears discover something your eyes might miss?",
     nguon_nut: "ℹ️ NASA data sources", doc_trang: "Listen to Sprout read this page", ve: "⬅ Back", tiep: "Next ➜", dong: "Close", nghe_lai: "🔊 Listen",
     dang_doc_mau: "Reading colors of frame {i}/{n}…", san_sang: "Read {n} NASA frames ✓", khong_khung: "No frames are embedded yet.",
-    ten_chat: ["Carbon monoxide (CO)", "Fine particles (PM2.5)", "Nitrogen oxides (NOx)", "Ozone (O₃)"],
+    ten_chat: ["Carbon monoxide (CO)", "Fine particles (PM2.5)", "Nitrogen oxides (NOx)", "Ozon (O₃)"],
     ten_ngan: ["CO", "PM2.5", "NOx", "O₃"],
     nhac_cu: ["🎺 low horn", "🌫️ crackling grains", "🚗 electric pluck", "🔔 glass bell"],
     muc: { khong: "unreadable", thap: "Low", vua: "Medium", cao: "High" },
@@ -642,6 +665,13 @@ const CHU = {
     jb_goi_y: "Press ▶ and a white line sweeps across the map. Each substance has its own instrument; darker color means higher, denser notes. Tap the map to hear one spot.",
     jb_thanh: "Choose a time", jb_cham: "🐢 Slow", jb_tua: "⏩ Time-lapse",
     jb_tua_goi_y: "Time-lapse running. Tap a spot on the map to hear how it changes over time.",
+    jb_tp_tieu_de: "🏙️ The air over one city",
+    jb_tp_goi_y: "Hear its air change all summer: each note is 6 hours, 4 notes make a day.",
+    jb_tp_chon: "Choose a city", jb_tp_phat: "▶ Play", jb_tp_dung: "■ Stop",
+    vung: ["Asia", "Europe", "Africa", "North America", "South America"],
+    jb_tp_dang: "📍 <b>{tp}</b> · {ngay}<br>Inside the <b>{chat}</b> band · {nhac}<br>Color level: <span class=\"muc muc-{lop}\">{muc}</span>",
+    jb_tp_nghi: "📍 <b>{tp}</b> · {ngay}<br>On a band edge, can't be read (one beat of rest).",
+    jb_tp_xong: "🎵 Summer is over in <b>{tp}</b>!<br>",
     jb_ngay: "Frame {so} · ≈ {ngay}",
     jb_dang: "Scanning: <b>{chat}</b> · longitude {kinh} · darkest at {vi} ({muc})",
     jb_mo_dau: "Press ▶ or tap the map. Use arrow keys to move and Enter to listen.",
@@ -659,8 +689,8 @@ const CHU = {
     hoc_chat: [
       { mo_ta: "A colorless, odorless gas. Breathing a lot of it makes it hard for blood to carry oxygen.", nguon: "Incomplete burning: wildfires, vehicles, charcoal stoves.", ban_do: "Pale yellow = little, dark red = a lot. In July–August 2024 a big red plume covers Canada and North America – wildfire season." },
       { mo_ta: "Particles smaller than 2.5 micrometers – about 20–30 times thinner than a hair – that can go deep into the lungs.", nguon: "Smoke, vehicles, factories, desert dust.", ban_do: "Cream = little, brown = a lot. Look for the brown streak blowing from Africa over the Atlantic." },
-      { mo_ta: "The gases NO and NO₂. They help form ground-level ozone and acid rain.", nguon: "Burning fuel at high temperature: vehicles, power plants, ships.", ban_do: "Light green = little, dark green = a lot; gray/black areas mean almost none. Look for faint straight lines over the ocean." },
-      { mo_ta: "High up, ozone blocks ultraviolet rays. Near the ground, ozone harms lungs and crops.", nguon: "Not emitted directly: it forms when NOx and organic vapors meet strong sunlight.", ban_do: "Gray = little, deep blue-violet = a lot. Sunny summer makes North America, Europe and Asia deep violet." }
+      { mo_ta: "The gases NO and NO₂. They help form ground-level Ozon and acid rain.", nguon: "Burning fuel at high temperature: vehicles, power plants, ships.", ban_do: "Light green = little, dark green = a lot; gray/black areas mean almost none. Look for faint straight lines over the ocean." },
+      { mo_ta: "High up, Ozon blocks ultraviolet rays. Near the ground, Ozon harms lungs and crops.", nguon: "Not emitted directly: it forms when NOx and organic vapors meet strong sunlight.", ban_do: "Gray = little, deep blue-violet = a lot. Sunny summer makes North America, Europe and Asia deep violet." }
     ],
     hoc_luu_y: "💡 <b>Note for detectives:</b> NASA did not publish a color scale with units for this video, so the app only compares <b>darker vs lighter</b> on the same map (relative levels) and shows no ppb or µg/m³. <b>Low</b> = lighter than half the map; <b>High</b> = among the darkest 15% for that substance. Each substance has its own color scale: don't compare CO “High” with O₃ “High”.",
     game_tieu_de: "🎮 Games",
@@ -675,13 +705,13 @@ const CHU = {
     het_game: "🎉 Done! You got {sao}/{tong} ⭐", choi_lai: "🔄 Play again",
     tong_sao: "⭐ Total stars: {sao}",
     nguon_tieu_de: "ℹ️ Where is the data from?",
-    nguon_noi_dung: "<p class=\"wc-nguon-mo-dau\">NASA's GEOS-CF model tracks four things in the air: <b>CO, fine particles PM2.5, NOx and ozone</b>. In summer 2024, as wildfires raged across North America, NASA painted them as color bands on a world map.</p><ul><li><b>Frames:</b> NASA Scientific Visualization Studio, <a href=\"https://svs.gsfc.nasa.gov/5533\" target=\"_blank\" rel=\"noopener\">“Air Quality Model Runs” (SVS 5533)</a>, <i>AirQuality_MapWithLabels</i> set, 5760×3240, 1,800 frames.</li><li><b>Model:</b> GEOS-CF (Goddard Earth Observing System Composition Forecasting), NASA GMAO.</li><li><b>Period:</b> 1 July – 14 September 2024, North American fire season. The app assumes 1 frame = 1 hour (1,800 frames ÷ 75 days); SVS does not state this.</li><li><b>Visualization:</b> Helen-Nicole Kostis (USRA), Joseph V. Ardizzone (NASA/GSFC). Science: Lesley Ott (NASA/GSFC).</li><li><b>How colors are read:</b> frames are shrunk to 1152×648; the app measures each pixel in the browser and matches it to each substance's color ramp. Band positions and map coordinates (18 original pixels = 1°, longitude −180° to 140°) were measured from 3 original PNG frames and re-checked on all 300 frames of this build.</li><li><b>Sound:</b> fully synthesized with Web Audio, no recorded files.</li></ul>",
+    nguon_noi_dung: "<p class=\"wc-nguon-mo-dau\">NASA's GEOS-CF model tracks four things in the air: <b>CO, fine particles PM2.5, NOx and Ozon</b>.</p><ul><li><b>Frames:</b> NASA Scientific Visualization Studio, <a href=\"https://svs.gsfc.nasa.gov/5533\" target=\"_blank\" rel=\"noopener\">“Air Quality Model Runs” (SVS 5533)</a>, <i>AirQuality_MapWithLabels</i> set, 5760×3240, 1,800 frames.</li><li><b>Model:</b> GEOS-CF (Goddard Earth Observing System Composition Forecasting), NASA GMAO.</li><li><b>Period:</b> 1 July – 14 September 2024, North American fire season. The app assumes 1 frame = 1 hour (1,800 frames ÷ 75 days); SVS does not state this.</li><li><b>Visualization:</b> Helen-Nicole Kostis (USRA), Joseph V. Ardizzone (NASA/GSFC). Science: Lesley Ott (NASA/GSFC).</li><li><b>How colors are read:</b> frames are shrunk to 1152×648; the app measures each pixel in the browser and matches it to each substance's color ramp. Band positions and map coordinates (18 original pixels = 1°, longitude −180° to 140°) were measured from 3 original PNG frames and re-checked on all 300 frames of this build.</li><li><b>Sound:</b> fully synthesized with Web Audio, no recorded files.</li></ul>",
     doc: {
       "man-home": "Hi! I'm Sprout. Today we'll listen to Earth's sky using NASA's map. Press Sprout's story to hear our story, Summer Jukebox to listen to the map, or Games to play.",
-      "man-jb": "This is the Summer Jukebox. The map has four alternating color bands. When you press play, a white line sweeps from left to right. The low horn is CO, the crackle is fine particles, the pluck is NOx, and the bell is ozone. Higher, denser notes mean darker color.",
+      "man-jb": "This is the Summer Jukebox. The map has four alternating color bands. When you press play, a white line sweeps from left to right. The low horn is CO, the crackle is fine particles, the pluck is NOx, and the bell is Ozon. Higher, denser notes mean darker color.",
       "man-tt-ds": "Pick a city to be a detective. We'll read its air diary day by day.",
       "man-tt": "This is the city's diary. Each bar is one day. The bar color shows which band the city was in, and the height shows how dark the color was.",
-      "man-hoc": "The four guests in the air are CO, fine particles PM2.5, NOx and ozone. Listen to learn each instrument.",
+      "man-hoc": "The four guests in the air are CO, fine particles PM2.5, NOx and Ozon. Listen to learn each instrument.",
       "man-game": "Pick a game: be an air detective, guess the substance, or find which place has more.",
       "man-g1": "Press listen, then guess which substance that instrument is.",
       "man-g2": "Listen to place A and place B. Higher, denser notes mean darker color."
@@ -812,26 +842,38 @@ function chuMuc(v, d) { return T("muc")[lopMuc(v, d)]; }
 function soMuc(v) { return "(" + v.toFixed(2).replace(".", ngonNgu === "en" ? "." : ",") + ")"; }
 
 // ---------- THÀNH PHỐ ----------
+// 30 thành phố, nhóm theo châu lục (vung: 0 Á, 1 Âu, 2 Phi, 3 Bắc Mỹ, 4 Nam Mỹ)
 const CAC_TP = [
-  { id: "hanoi", ten: "Hà Nội", tenEn: "Hanoi", co: "🇻🇳", lat: 21.03, lon: 105.85 },
-  { id: "hcm", ten: "TP. Hồ Chí Minh", tenEn: "Ho Chi Minh City", co: "🇻🇳", lat: 10.82, lon: 106.63 },
-  { id: "bangkok", ten: "Băng Cốc", tenEn: "Bangkok", co: "🇹🇭", lat: 13.76, lon: 100.50 },
-  { id: "jakarta", ten: "Jakarta", tenEn: "Jakarta", co: "🇮🇩", lat: -6.20, lon: 106.85 },
-  { id: "beijing", ten: "Bắc Kinh", tenEn: "Beijing", co: "🇨🇳", lat: 39.90, lon: 116.40 },
-  { id: "seoul", ten: "Seoul", tenEn: "Seoul", co: "🇰🇷", lat: 37.57, lon: 126.98 },
-  { id: "delhi", ten: "New Delhi", tenEn: "New Delhi", co: "🇮🇳", lat: 28.61, lon: 77.21 },
-  { id: "moscow", ten: "Mát-xcơ-va", tenEn: "Moscow", co: "🇷🇺", lat: 55.76, lon: 37.62 },
-  { id: "paris", ten: "Paris", tenEn: "Paris", co: "🇫🇷", lat: 48.86, lon: 2.35 },
-  { id: "cairo", ten: "Cairo", tenEn: "Cairo", co: "🇪🇬", lat: 30.04, lon: 31.24 },
-  { id: "lagos", ten: "Lagos", tenEn: "Lagos", co: "🇳🇬", lat: 6.52, lon: 3.38 },
-  { id: "kinshasa", ten: "Kinshasa", tenEn: "Kinshasa", co: "🇨🇩", lat: -4.32, lon: 15.31 },
-  { id: "yellowknife", ten: "Yellowknife", tenEn: "Yellowknife", co: "🇨🇦", lat: 62.45, lon: -114.37 },
-  { id: "anchorage", ten: "Anchorage", tenEn: "Anchorage", co: "🇺🇸", lat: 61.22, lon: -149.90 },
-  { id: "la", ten: "Los Angeles", tenEn: "Los Angeles", co: "🇺🇸", lat: 34.05, lon: -118.24 },
-  { id: "newyork", ten: "New York", tenEn: "New York", co: "🇺🇸", lat: 40.71, lon: -74.00 },
-  { id: "mexico", ten: "Mexico City", tenEn: "Mexico City", co: "🇲🇽", lat: 19.43, lon: -99.13 },
-  { id: "manaus", ten: "Manaus", tenEn: "Manaus", co: "🇧🇷", lat: -3.12, lon: -60.02 },
-  { id: "saopaulo", ten: "São Paulo", tenEn: "São Paulo", co: "🇧🇷", lat: -23.55, lon: -46.63 }
+  { id: "hanoi", ten: "Hà Nội", tenEn: "Hanoi", co: "🇻🇳", lat: 21.03, lon: 105.85, vung: 0 },
+  { id: "danang", ten: "Đà Nẵng", tenEn: "Da Nang", co: "🇻🇳", lat: 16.05, lon: 108.20, vung: 0 },
+  { id: "hcm", ten: "TP. Hồ Chí Minh", tenEn: "Ho Chi Minh City", co: "🇻🇳", lat: 10.82, lon: 106.63, vung: 0 },
+  { id: "bangkok", ten: "Băng Cốc", tenEn: "Bangkok", co: "🇹🇭", lat: 13.76, lon: 100.50, vung: 0 },
+  { id: "jakarta", ten: "Jakarta", tenEn: "Jakarta", co: "🇮🇩", lat: -6.20, lon: 106.85, vung: 0 },
+  { id: "manila", ten: "Manila", tenEn: "Manila", co: "🇵🇭", lat: 14.60, lon: 120.98, vung: 0 },
+  { id: "beijing", ten: "Bắc Kinh", tenEn: "Beijing", co: "🇨🇳", lat: 39.90, lon: 116.40, vung: 0 },
+  { id: "shanghai", ten: "Thượng Hải", tenEn: "Shanghai", co: "🇨🇳", lat: 31.23, lon: 121.47, vung: 0 },
+  { id: "seoul", ten: "Seoul", tenEn: "Seoul", co: "🇰🇷", lat: 37.57, lon: 126.98, vung: 0 },
+  { id: "tokyo", ten: "Tokyo", tenEn: "Tokyo", co: "🇯🇵", lat: 35.68, lon: 139.69, vung: 0 },
+  { id: "delhi", ten: "New Delhi", tenEn: "New Delhi", co: "🇮🇳", lat: 28.61, lon: 77.21, vung: 0 },
+  { id: "mumbai", ten: "Mumbai", tenEn: "Mumbai", co: "🇮🇳", lat: 19.08, lon: 72.88, vung: 0 },
+  { id: "dubai", ten: "Dubai", tenEn: "Dubai", co: "🇦🇪", lat: 25.20, lon: 55.27, vung: 0 },
+  { id: "moscow", ten: "Mát-xcơ-va", tenEn: "Moscow", co: "🇷🇺", lat: 55.76, lon: 37.62, vung: 1 },
+  { id: "london", ten: "London", tenEn: "London", co: "🇬🇧", lat: 51.51, lon: -0.13, vung: 1 },
+  { id: "paris", ten: "Paris", tenEn: "Paris", co: "🇫🇷", lat: 48.86, lon: 2.35, vung: 1 },
+  { id: "rome", ten: "Rô-ma", tenEn: "Rome", co: "🇮🇹", lat: 41.90, lon: 12.50, vung: 1 },
+  { id: "cairo", ten: "Cairo", tenEn: "Cairo", co: "🇪🇬", lat: 30.04, lon: 31.24, vung: 2 },
+  { id: "lagos", ten: "Lagos", tenEn: "Lagos", co: "🇳🇬", lat: 6.52, lon: 3.38, vung: 2 },
+  { id: "kinshasa", ten: "Kinshasa", tenEn: "Kinshasa", co: "🇨🇩", lat: -4.32, lon: 15.31, vung: 2 },
+  { id: "nairobi", ten: "Nairobi", tenEn: "Nairobi", co: "🇰🇪", lat: -1.29, lon: 36.82, vung: 2 },
+  { id: "johannesburg", ten: "Johannesburg", tenEn: "Johannesburg", co: "🇿🇦", lat: -26.20, lon: 28.05, vung: 2 },
+  { id: "yellowknife", ten: "Yellowknife", tenEn: "Yellowknife", co: "🇨🇦", lat: 62.45, lon: -114.37, vung: 3 },
+  { id: "vancouver", ten: "Vancouver", tenEn: "Vancouver", co: "🇨🇦", lat: 49.28, lon: -123.12, vung: 3 },
+  { id: "anchorage", ten: "Anchorage", tenEn: "Anchorage", co: "🇺🇸", lat: 61.22, lon: -149.90, vung: 3 },
+  { id: "la", ten: "Los Angeles", tenEn: "Los Angeles", co: "🇺🇸", lat: 34.05, lon: -118.24, vung: 3 },
+  { id: "newyork", ten: "New York", tenEn: "New York", co: "🇺🇸", lat: 40.71, lon: -74.00, vung: 3 },
+  { id: "mexico", ten: "Mexico City", tenEn: "Mexico City", co: "🇲🇽", lat: 19.43, lon: -99.13, vung: 3 },
+  { id: "manaus", ten: "Manaus", tenEn: "Manaus", co: "🇧🇷", lat: -3.12, lon: -60.02, vung: 4 },
+  { id: "saopaulo", ten: "São Paulo", tenEn: "São Paulo", co: "🇧🇷", lat: -23.55, lon: -46.63, vung: 4 }
 ];
 const tenTP = function (tp) { return ngonNgu === "en" ? tp.tenEn : tp.ten; };
 function tpGanNhat(lat, lon) {
@@ -914,7 +956,7 @@ function phatDiem(d, v, tre) {
 
 // ---------- CHUYỂN MÀN ----------
 function moMan(id) {
-  dungAm(); dungDoc(); dungQuet(); dungTua(); dungNhatKy();
+  dungAm(); dungDoc(); dungQuet(); dungTua(); dungTP(); dungNhatKy();
   document.querySelectorAll(".man").forEach(function (m) { m.classList.remove("hien"); });
   $(id).classList.add("hien");
   $(id).scrollTop = 0;
@@ -973,7 +1015,7 @@ function veJb() {
 }
 function moJb() { moMan("man-jb"); veJb(); $("jb-the").innerHTML = T("jb_mo_dau"); capNutPhat(); }
 $("nut-jb").addEventListener("click", moJb);
-$("jb-thanh").addEventListener("input", function (e) { dungQuet(); dungTua(); jbK = +e.target.value; veJb(); });
+$("jb-thanh").addEventListener("input", function (e) { dungQuet(); dungTua(); dungTP(); jbK = +e.target.value; veJb(); });
 $("jb-cham").addEventListener("click", function () { jbCham = !jbCham; this.setAttribute("aria-pressed", String(jbCham)); });
 function sangChip(d) { document.querySelectorAll("#jb-chip .chip").forEach(function (c) { c.classList.toggle("sang", +c.dataset.d === d); }); }
 function capNutPhat() { $("jb-phat").textContent = quet ? "■" : "▶"; $("jb-phat").setAttribute("aria-label", quet ? "Dừng" : "Phát"); }
@@ -998,7 +1040,7 @@ let tua = null;
 function dungTua() { if (!tua) return; clearInterval(tua); tua = null; $("jb-tua").setAttribute("aria-pressed", "false"); dungAm(); }
 $("jb-tua").addEventListener("click", function () {
   if (tua) { dungTua(); return; }
-  dungQuet(); dungDoc();
+  dungQuet(); dungDoc(); dungTP();
   this.setAttribute("aria-pressed", "true");
   $("jb-the").innerHTML = T("jb_tua_goi_y");
   const p = batDauPhat();
@@ -1018,7 +1060,7 @@ function dungQuet() {
 }
 $("jb-phat").addEventListener("click", function () {
   if (quet) { dungQuet(); return; }
-  dungDoc(); dungTua();
+  dungDoc(); dungTua(); dungTP();
   const k = KHUNG[jbK], p = batDauPhat(), ctx = layCtx(), nhip = jbCham ? 0.55 : 0.32, t0 = ctx.currentTime + 0.08;
   quet = { hen: [] };
   const vach = $("jb-vach"); vach.style.display = "block";
@@ -1051,6 +1093,7 @@ function datTam(xGoc, yGoc, nghe) {
   const noi = tp ? T("gan", { ten: tp.co + " " + tenTP(tp) }) : T("khong_gan");
   if (!m) { $("jb-the").innerHTML = T("jb_diem_bien"); loaChu(T("jb_diem_bien")); return; }
   dungQuet();
+  dungTP();
   if (tua) { sangChip(m.d); return; } // đang tua: điểm này sẽ được nghe ở mỗi khung
   $("jb-the").innerHTML = T("jb_diem", { noi: noi, toa: ghiToaDo(lat, lon), chat: T("ten_chat")[m.d], nhac: T("nhac_cu")[m.d], lop: lopMuc(m.v, m.d), muc: chuMuc(m.v, m.d), so: soMuc(m.v) });
   loaChu($("jb-the").innerHTML.replace(/<br>/g, ". "));
@@ -1066,6 +1109,82 @@ jbCanvas.addEventListener("keydown", function (e) {
   if (m) { e.preventDefault(); datTam(tam.xGoc + m[0], tam.yGoc + m[1], true); }
   else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); datTam(tam.xGoc, tam.yGoc, true); }
 });
+
+// ---------- HỘP NHẠC: NGHE 1 THÀNH PHỐ CẢ MÙA HÈ ----------
+// Mỗi khung (6 giờ) = 1 nốt bằng nhạc cụ của dải đang phủ thành phố; 4 khung = 1 ngày = 1 ô nhịp có nốt trầm ở phách đầu.
+let tpChay = null;
+function veChonTP() {
+  const sel = $("jb-tp"), cu = sel.value;
+  sel.innerHTML = "";
+  T("vung").forEach(function (tenVung, v) {
+    const g = document.createElement("optgroup"); g.label = tenVung;
+    CAC_TP.filter(function (tp) { return tp.vung === v; }).forEach(function (tp) {
+      const o = document.createElement("option"); o.value = tp.id; o.textContent = tp.co + " " + tenTP(tp); g.appendChild(o);
+    });
+    sel.appendChild(g);
+  });
+  sel.value = cu || "hanoi";
+  $("jb-tp-phat").textContent = tpChay ? T("jb_tp_dung") : T("jb_tp_phat");
+}
+function dungTP() {
+  if (!tpChay) return;
+  clearInterval(tpChay.hen); tpChay = null;
+  $("jb-tp-phat").textContent = T("jb_tp_phat"); sangChip(-1); dungAm();
+}
+$("jb-tp").addEventListener("change", function () {
+  dungTP();
+  const tp = CAC_TP.find(function (x) { return x.id === this.value; }, this);
+  if (tp) datTam(xTuKinh(tp.lon), yTuVi(tp.lat), false);
+});
+$("jb-tp-phat").addEventListener("click", function () {
+  if (tpChay) { dungTP(); return; }
+  dungQuet(); dungTua(); dungDoc();
+  const tp = CAC_TP.find(function (x) { return x.id === $("jb-tp").value; });
+  if (!tp) return;
+  const p = batDauPhat(), ctx = layCtx(), nhip = jbCham ? 0.26 : 0.13;
+  const xG = xTuKinh(tp.lon), yG = yTuVi(tp.lat);
+  datTam(xG, yG, false);
+  let i = 0;
+  tpChay = { hen: null, tp: tp };
+  this.textContent = T("jb_tp_dung");
+  function buoc() {
+    if (!tpChay || dangPhat !== p) { // âm thanh đã bị dừng ở chỗ khác
+      if (tpChay) { clearInterval(tpChay.hen); tpChay = null; $("jb-tp-phat").textContent = T("jb_tp_phat"); }
+      return;
+    }
+    if (i >= KHUNG.length) { ketThucTP(tp); return; }
+    jbK = i; $("jb-thanh").value = i; veJb();
+    const k = KHUNG[i], m = mucTai(k, xG, yG), t = ctx.currentTime + 0.02;
+    $("jb-tp-vach").style.width = ((i + 1) / KHUNG.length * 100) + "%";
+    if (m) {
+      sangChip(m.d);
+      NHAC[m.d](ctx, p.tong, t, tanSo(m.d, m.v, i % 2), 0.3 + 0.7 * m.v);
+      if (Math.floor(k.so / 6) % 4 === 0) NHAC[m.d](ctx, p.tong, t, tanSo(m.d, 0, 0) / 2, 0.35); // phách đầu ngày: nốt trầm
+      $("jb-the").innerHTML = T("jb_tp_dang", { tp: tp.co + " " + tenTP(tp), ngay: ngayKhung(k.so), chat: T("ten_chat")[m.d], nhac: T("nhac_cu")[m.d], lop: lopMuc(m.v, m.d), muc: chuMuc(m.v, m.d) });
+    } else {
+      sangChip(-1);
+      $("jb-the").innerHTML = T("jb_tp_nghi", { tp: tp.co + " " + tenTP(tp), ngay: ngayKhung(k.so) });
+    }
+    i++;
+  }
+  buoc();
+  tpChay.hen = setInterval(buoc, nhip * 1000);
+});
+function ketThucTP(tp) {
+  clearInterval(tpChay.hen); tpChay = null; $("jb-tp-vach").style.width = "100%";
+  $("jb-tp-phat").textContent = T("jb_tp_phat"); sangChip(-1);
+  setTimeout(function () { if (!tpChay && !quet && !tua) dungAm(); }, 1500);
+  const nk = nhatKy(tp), dong = [];
+  for (let d = 0; d < 4; d++) {
+    const ds = nk.filter(function (e) { return e.m && e.m.d === d; });
+    if (!ds.length) continue;
+    const tb = ds.reduce(function (t, e) { return t + e.m.v; }, 0) / ds.length;
+    const max = ds.reduce(function (a, e) { return e.m.v > a.m.v ? e : a; });
+    dong.push(T("tt_tom_tat_dong", { chat: T("ten_chat")[d], lan: theoNgay(ds).length, lop: lopMuc(tb, d), muc: chuMuc(tb, d), ngay: ngayNgan(max.k.so) }));
+  }
+  $("jb-the").innerHTML = T("jb_tp_xong", { tp: tp.co + " " + tenTP(tp) }) + dong.join("<br>");
+  loaChu($("jb-the").innerHTML.replace(/<br>/g, ". "));
+}
 
 // ---------- THÁM TỬ ----------
 let ttTP = null, ttPhat = null;
@@ -1372,10 +1491,16 @@ $("wc-nguon").addEventListener("toggle", function () {
   setTimeout(capNenWc, 400);
 });
 let wcX0 = null;
-$("man-welcome").addEventListener("pointerdown", function (e) { wcX0 = e.clientX; });
+// Vuốt ngang để chuyển trang: chỉ với ngón tay/bút (chuột kéo là để bôi đen chữ),
+// và bỏ qua khi đang bôi đen chữ hoặc bấm vào nút/link
+$("man-welcome").addEventListener("pointerdown", function (e) {
+  wcX0 = (e.pointerType === "mouse" || e.target.closest("a, button, summary, details")) ? null : e.clientX;
+});
 $("man-welcome").addEventListener("pointerup", function (e) {
   if (wcX0 === null) return;
   const d = e.clientX - wcX0; wcX0 = null;
+  const chon = window.getSelection ? String(window.getSelection()) : "";
+  if (chon.trim()) return; // đang bôi đen chữ thì không chuyển trang
   if (Math.abs(d) > 50) wcDenTrang(wcTrang + (d < 0 ? 1 : -1));
 });
 
@@ -1416,7 +1541,7 @@ function apDung() {
   document.querySelectorAll("[data-i18n-html]").forEach(function (el) { el.innerHTML = T(el.dataset.i18nHtml); });
   document.querySelectorAll("[data-i18n-aria]").forEach(function (el) { el.setAttribute("aria-label", T(el.dataset.i18nAria)); });
   $("nut-doi-tieng").textContent = ngonNgu === "vi" ? "EN" : "VI";
-  veDsTT(); veHoc(); veSao(); veWelcome();
+  veDsTT(); veHoc(); veSao(); veWelcome(); veChonTP();
   if ($("man-jb").classList.contains("hien")) { veJb(); $("jb-the").innerHTML = T("jb_mo_dau"); }
   if ($("man-tt").classList.contains("hien")) veTT();
   $("tt-phat").textContent = T("tt_phat");
