@@ -440,6 +440,45 @@
   .hoc-panel-noi-dung { display: flex; flex-direction: column; gap: 10px; padding-top: 6px; text-align: left; }
   /* Hộp nhạc: 2 khung chữ không còn khung bao */
   #man-jb .jb-tp, #man-jb #jb-the { background: transparent; box-shadow: none; border: none; padding: 4px 2px; }
+  .trai-dat .td-khi4 { animation: td-bong 3.2s ease-in-out infinite; }
+  @keyframes td-bong { 50% { transform: translateY(-6px); } }
+  .jb-khi { display: flex; flex-direction: column; gap: 10px; }
+  .jb-khi-dong { display: flex; gap: 10px; align-items: flex-start; font-size: .9rem; line-height: 1.45; padding-left: 8px; border-left: 4px solid var(--m); }
+  .jb-khi-nhac { font-size: .8rem; color: #52796f; white-space: nowrap; }
+  /* Hộp nhạc: phân tích chất lượng không khí của khung đang xem */
+  .jb-khi, .jb-khi-dong { display: none; }
+  .jb-pt { display: flex; flex-direction: column; gap: 6px; font-size: .88rem; }
+  .jb-pt p { margin: 0; line-height: 1.45; }
+  .jb-pt-tieu { font-weight: 800; color: var(--vien); font-size: .95rem; }
+  .jb-pt-dong { display: grid; grid-template-columns: 20px 42px 1fr 34px; grid-template-areas: "i t b s" ". n n n"; column-gap: 6px; align-items: center; }
+  .jb-pt-dong .icon-chat { grid-area: i; } .jb-pt-ten { grid-area: t; font-weight: 800; color: var(--m); }
+  .jb-pt-thanh { grid-area: b; height: 10px; border-radius: 5px; background: #e9ecef; overflow: hidden; }
+  .jb-pt-thanh i { display: block; height: 100%; background: var(--m); }
+  .jb-pt-so { grid-area: s; font-weight: 800; text-align: right; }
+  .jb-pt-noi { grid-area: n; font-size: .8rem; color: #52796f; }
+  .jb-pt-chu { font-size: .78rem; color: #52796f; }
+  .jb-pt-doc { background: #f1fbf3; border-radius: 10px; padding: 8px 10px; font-size: .82rem; color: #3f5f4d; }
+  .jb-pt-doc p { margin: 0 0 4px; } .jb-pt-doc ul { margin: 0 0 4px; padding-left: 18px; } .jb-pt-doc li { margin: 2px 0; }
+  .jb-pt-doc-tieu { font-weight: 800; color: var(--vien); }
+  /* ===== Trang Games: thẻ cây + 3 nhóm lưới 2 cột ===== */
+  .gm-cay { width: 100%; display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 18px; cursor: pointer; font: inherit; color: var(--chu); text-align: left;
+    background: linear-gradient(135deg, #fff, #eafbea); border: 2px solid #95d5b2; box-shadow: 0 3px 0 #2d6a4f22; }
+  .gm-cay-hinh { width: 74px; height: 84px; flex-shrink: 0; }
+  .gm-cay-chu { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; flex: 1; min-width: 0; }
+  .gm-cay-chu b { font-size: 1.05rem; color: var(--vien); }
+  .gm-cay-chu .nho { font-size: .8rem; color: #52796f; }
+  .gm-mui { font-size: 1.8rem; color: var(--mau-nut); font-weight: 800; }
+  .gm-nhom { align-self: flex-start; margin: 6px 0 0; font-size: 1rem; color: var(--vien); }
+  .gm-luoi { grid-template-columns: 1fr 1fr; }
+  .gm-o { padding: 10px 6px; }
+  .gm-o .ten { font-size: .9rem; } .gm-o .nho { font-size: .76rem; }
+  .gm-sao { font-size: .72rem; font-weight: 800; color: #7a4b00; background: #fff3c4; border-radius: 999px; padding: 1px 8px; margin-top: 2px; }
+  /* Hộp nhạc: 2 tab chế độ */
+  .jb-tab { display: flex; gap: 6px; width: 100%; background: #fff; border-radius: 999px; padding: 4px; border: 2px solid #b7e4c7; }
+  .jb-tab button { flex: 1; border: none; border-radius: 999px; padding: 8px 6px; font: inherit; font-weight: 800; font-size: .9rem; cursor: pointer; background: transparent; color: var(--vien); }
+  .jb-tab button[aria-selected="true"] { background: var(--mau-nut); color: #fff; }
+  .jb-tab button:focus-visible { outline: 3px solid #f4a261; }
+  .jb-tp[hidden], .hoc-panel[hidden] { display: none; }
 </style>
 </head>
 <body>
@@ -543,13 +582,6 @@
       <path d="M110 128 C120 123 136 128 134 138 C130 148 115 149 107 142 C103 137 105 131 110 128 Z" fill="#6cc864"/>
       <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(30,107,47,.35)" stroke-width="1.5" stroke-dasharray="3 6"/>
       <g class="td-ve-tinh"><text x="100" y="26" font-size="20" text-anchor="middle">🛰️</text></g>
-      <g transform="translate(150 150)">
-        <rect class="td-song" x="0" y="-14" width="5" height="28" rx="2.5" fill="#f4a261"/>
-        <rect class="td-song" x="9" y="-22" width="5" height="44" rx="2.5" fill="#2e9e44"/>
-        <rect class="td-song" x="18" y="-10" width="5" height="20" rx="2.5" fill="#2f80ed"/>
-        <rect class="td-song" x="27" y="-18" width="5" height="36" rx="2.5" fill="#f4a261"/>
-        <rect class="td-song" x="36" y="-8" width="5" height="16" rx="2.5" fill="#2e9e44"/>
-      </g>
     </svg>
     <h1>Green Corner</h1>
     <p class="khau-hieu" data-i18n="khau_hieu">Từ một góc xanh nhỏ, lắng nghe bầu trời của cả Trái Đất</p>
@@ -562,6 +594,10 @@
   <!-- MÁY HÁT -->
   <section class="man" id="man-jb">
     <h2 data-i18n="jb_tieu_de">🎧 Hộp nhạc mùa hè</h2>
+    <div class="jb-tab" id="jb-tab" role="tablist">
+      <button type="button" role="tab" data-che="tg" aria-selected="true" data-i18n="jb_tab_tg">🌍 Cả thế giới</button>
+      <button type="button" role="tab" data-che="tp" aria-selected="false" data-i18n="jb_tab_tp">🏙️ Một thành phố</button>
+    </div>
     <div class="khung-anh" id="jb-khung">
       <canvas id="jb-anh" width="1152" height="648" tabindex="0" role="img" aria-label=""></canvas>
       <div class="vach-quet" id="jb-vach"></div>
@@ -578,16 +614,18 @@
       <span class="ngay" id="jb-ngay"></span>
       <input type="range" id="jb-thanh" min="0" max="0" value="0" data-i18n-aria="jb_thanh" aria-label="Chọn thời điểm">
     </div>
-    <div class="the jb-tp">
-      <h3 data-i18n="jb_tp_tieu_de">🏙️ Không khí qua một thành phố</h3>
-      <p class="phu" data-i18n="jb_tp_goi_y">Nghe không khí ở đó thay đổi suốt mùa hè: mỗi nốt là 6 giờ, 4 nốt là một ngày.</p>
+    <div class="the jb-tp" id="jb-che-tp" hidden>
       <div class="jb-tp-hang">
         <select id="jb-tp" data-i18n-aria="jb_tp_chon" aria-label="Chọn thành phố"></select>
-        <button class="nut nut-tim" id="jb-tp-phat" type="button">▶</button>
+        <button class="nut nut-tim" id="jb-tp-phat" type="button" hidden>▶</button>
       </div>
       <div class="jb-tp-tien" aria-hidden="true"><i id="jb-tp-vach"></i></div>
     </div>
     <div class="the" id="jb-the" aria-live="polite"></div>
+    <details class="hoc-panel" id="jb-cach-doc">
+      <summary data-i18n="pt_doc_tieu_nut">📖 Cách đọc phân tích</summary>
+      <div class="hoc-panel-noi-dung jb-pt-doc" data-i18n-html="pt_doc"></div>
+    </details>
     <details class="hoc-panel" id="hoc-panel">
       <summary data-i18n="nut_hoc">📘 Bốn vị khách trong không khí</summary>
       <div class="hoc-panel-noi-dung">
@@ -601,15 +639,14 @@
 
   <!-- THÁM TỬ: chọn thành phố -->
   <section class="man" id="man-tt-ds">
-    <button class="nut-nho nut-quay-lai" data-ve="man-game" type="button" data-i18n="ve">⬅ Về</button>
     <h2 data-i18n="tt_tieu_de">🔎 Thám tử không khí</h2>
     <p class="phu" data-i18n="tt_goi_y">Chọn một thành phố để xem nhật ký không khí ở đó qua từng ngày.</p>
     <div class="luoi" id="tt-luoi"></div>
+    <button class="nut-nho nut-quay-lai nut-ve-cuoi" data-ve="man-game" type="button" data-i18n="ve">⬅ Về</button>
   </section>
 
   <!-- THÁM TỬ: một thành phố -->
   <section class="man" id="man-tt">
-    <button class="nut-nho nut-quay-lai" data-ve="man-tt-ds" type="button" data-i18n="ve">⬅ Về</button>
     <h2 id="tt-ten"></h2>
     <p class="phu" id="tt-toa-do"></p>
     <div class="the doan" id="tt-doan" hidden></div>
@@ -621,32 +658,39 @@
     <div class="the" id="tt-tom-tat"></div>
     <button class="nut-nho" type="button" id="tt-lam-lai" data-i18n="doan_lam_lai">🕵️ Làm lại 5 câu suy đoán</button>
     </div>
+    <button class="nut-nho nut-quay-lai nut-ve-cuoi" data-ve="man-tt-ds" type="button" data-i18n="ve">⬅ Về</button>
   </section>
 
   <!-- TÌM HIỂU -->
 
   <!-- GAME: danh sách -->
   <section class="man" id="man-game">
-    <button class="nut-nho nut-quay-lai" data-ve="man-home" type="button" data-i18n="ve">⬅ Về</button>
     <h2 data-i18n="game_tieu_de">🎮 Games</h2>
-    <p class="diem" id="tong-sao"></p>
-    <div class="luoi" style="grid-template-columns:1fr">
-      <button class="o-chon o-cay" id="cay-mo" type="button"><span class="lon">🌳</span><span class="ten" data-i18n="cay_ten_ngan">Cây của em</span><span class="nho" data-i18n="cay_mo_ta">Dùng sao để mua dáng cây, chậu và phụ kiện</span></button>
-      <button class="o-chon" id="g3-mo" type="button"><span class="lon">🌫️</span><span class="ten" data-i18n="g3_ten_ngan">Hành trình hạt bụi</span><span class="nho" data-i18n="g3_mo_ta">Hạt bụi rơi qua các tầng khí quyển, né khói ô nhiễm để xuống tới mặt đất</span></button>
-      <button class="o-chon" id="g5-mo" type="button"><span class="lon">💡</span><span class="ten" data-i18n="g5_ten">Giải pháp xanh</span><span class="nho" data-i18n="g5_mo_ta">Chọn thẻ giải pháp để làm sạch không khí cho một thành phố ô nhiễm</span></button>
-      <button class="o-chon" id="tt-mo" type="button"><span class="lon">🔎</span><span class="ten" data-i18n="tt_ten">Thám tử không khí</span><span class="nho" data-i18n="tt_mo_ta">Theo dõi không khí ở một thành phố qua 75 ngày</span></button>
+    <button class="gm-cay" id="cay-mo" type="button">
+      <svg class="gm-cay-hinh" id="gm-cay-hinh" viewBox="20 10 160 182" aria-hidden="true"></svg>
+      <span class="gm-cay-chu"><b data-i18n="cay_ten_ngan">Cây của em</b><span class="cay-sao" id="tong-sao"></span><span class="nho" id="gm-muc-tieu"></span></span>
+      <span class="gm-mui" aria-hidden="true">›</span>
+    </button>
+    <h3 class="gm-nhom" data-i18n="gm_nhom_nghe">🎧 Nghe</h3>
+    <div class="luoi gm-luoi">
+      <button class="o-chon gm-o" id="g1-mo" type="button"><span class="lon">🎻</span><span class="ten" data-i18n="g1_ten"></span><span class="nho" data-i18n="g1_ngan"></span><span class="gm-sao" data-sao="5"></span></button>
+      <button class="o-chon gm-o" id="g2-mo" type="button"><span class="lon">⚖️</span><span class="ten" data-i18n="g2_ten"></span><span class="nho" data-i18n="g2_ngan"></span><span class="gm-sao" data-sao="5"></span></button>
     </div>
-    <h3 data-i18n="ttdt_tieu_de" style="margin-top:6px">🎧 Thử thách đôi tai</h3>
-    <div class="luoi" style="grid-template-columns:1fr">
-      <button class="o-chon" id="g1-mo" type="button"><span class="lon">🎻</span><span class="ten" data-i18n="g1_ten">Nghe đoán chất</span><span class="nho" data-i18n="g1_mo_ta">Nghe nhạc cụ, đoán xem đó là CO, PM2.5, NOx hay O₃</span></button>
-      <button class="o-chon" id="g2-mo" type="button"><span class="lon">⚖️</span><span class="ten" data-i18n="g2_ten">Nơi nào nhiều hơn?</span><span class="nho" data-i18n="g2_mo_ta">Nghe hai nơi, đoán nơi có màu đậm hơn trên bản đồ NASA</span></button>
-      <button class="o-chon" id="g4-mo" type="button"><span class="lon">🌍</span><span class="ten" data-i18n="g4_ten">Bảo vệ Trái Đất</span><span class="nho" data-i18n="g4_mo_ta">Nghe một chất thay đổi suốt mùa hè, đoán nó tăng hay giảm, rồi tìm cách bảo vệ môi trường</span></button>
+    <h3 class="gm-nhom" data-i18n="gm_nhom_kham_pha">🔎 Khám phá dữ liệu</h3>
+    <div class="luoi gm-luoi">
+      <button class="o-chon gm-o" id="tt-mo" type="button"><span class="lon">🔎</span><span class="ten" data-i18n="tt_ten"></span><span class="nho" data-i18n="tt_ngan"></span><span class="gm-sao" data-sao="tt"></span></button>
+      <button class="o-chon gm-o" id="g4-mo" type="button"><span class="lon">🌍</span><span class="ten" data-i18n="g4_ten"></span><span class="nho" data-i18n="g4_ngan"></span><span class="gm-sao" data-sao="5"></span></button>
     </div>
+    <h3 class="gm-nhom" data-i18n="gm_nhom_hanh_dong">🕹️ Hành động & chiến lược</h3>
+    <div class="luoi gm-luoi">
+      <button class="o-chon gm-o" id="g3-mo" type="button"><span class="lon">🌫️</span><span class="ten" data-i18n="g3_ten_ngan"></span><span class="nho" data-i18n="g3_ngan"></span><span class="gm-sao" data-sao="3"></span></button>
+      <button class="o-chon gm-o" id="g5-mo" type="button"><span class="lon">💡</span><span class="ten" data-i18n="g5_ten"></span><span class="nho" data-i18n="g5_ngan"></span><span class="gm-sao" data-sao="3"></span></button>
+    </div>
+    <button class="nut-nho nut-quay-lai nut-ve-cuoi" data-ve="man-home" type="button" data-i18n="ve">⬅ Về</button>
   </section>
 
   <!-- CÂY CỦA EM -->
   <section class="man" id="man-cay">
-    <button class="nut-nho nut-quay-lai" data-ve="man-game" type="button" data-i18n="ve">⬅ Về</button>
     <div class="cay-dau"><h2 data-i18n="cay_ten">🌳 Cây của em</h2><span class="cay-sao" id="cay-sao">⭐ 0</span></div>
     <div class="cay-khung" id="cay-khung"><span class="cay-nhan-thu" data-i18n="cay_nhan_thu">👀 Mặc thử</span><svg id="cay-xem" viewBox="0 0 200 200" role="img" data-i18n-aria="cay_aria" aria-label="Cây của em"></svg></div>
     <div class="the cay-tb" id="cay-tb" aria-live="polite" hidden></div>
@@ -657,11 +701,11 @@
     </div>
     <div class="luoi cay-luoi" id="cay-luoi"></div>
     <p class="phu" data-i18n="cay_goi_y">Chơi game để kiếm sao ⭐. Bấm món mới để mặc thử rồi quyết định mua; món đã có thì bấm để chọn, đeo hoặc tháo.</p>
+    <button class="nut-nho nut-quay-lai nut-ve-cuoi" data-ve="man-game" type="button" data-i18n="ve">⬅ Về</button>
   </section>
 
   <!-- GAME 3: HÀNH TRÌNH HẠT BỤI -->
   <section class="man" id="man-g3">
-    <button class="nut-nho nut-quay-lai" data-ve="man-game" type="button" data-i18n="ve">⬅ Về</button>
     <h2 data-i18n="g3_ten">🌫️ Hành trình hạt bụi</h2>
     <div class="g3-thanh"><span data-i18n="g3_doc_tinh">☠️ Độc tính</span><div class="g3-doc-nen"><i id="g3-doc"></i></div></div>
     <p class="phu" id="g3-tang"></p>
@@ -670,18 +714,18 @@
       <div class="g3-bang" id="g3-bang" hidden></div>
     </div>
     <p class="phu" data-i18n="g3_dk">Chạm hoặc kéo ngón tay sang trái, phải (máy tính: rê chuột hoặc phím ← →) để hạt bụi né khói.</p>
+    <button class="nut-nho nut-quay-lai nut-ve-cuoi" data-ve="man-game" type="button" data-i18n="ve">⬅ Về</button>
   </section>
 
   <!-- GAME 4: BẢO VỆ TRÁI ĐẤT -->
   <section class="man" id="man-g4">
-    <button class="nut-nho nut-quay-lai" data-ve="man-game" type="button" data-i18n="ve">⬅ Về</button>
     <h2 data-i18n="g4_ten_tieu_de">🌍 Bảo vệ Trái Đất</h2>
     <div class="the doan" id="g4-noi"></div>
+    <button class="nut-nho nut-quay-lai nut-ve-cuoi" data-ve="man-game" type="button" data-i18n="ve">⬅ Về</button>
   </section>
 
   <!-- GAME 5: GIẢI PHÁP XANH -->
   <section class="man" id="man-g5">
-    <button class="nut-nho nut-quay-lai" data-ve="man-game" type="button" data-i18n="ve">⬅ Về</button>
     <h2 data-i18n="g5_tieu_de">💡 Giải pháp xanh</h2>
     <p class="phu" data-i18n="g5_goi_y">Chọn thẻ giải pháp để làm sạch không khí. Bấm một thẻ để xem riêng tác dụng của nó; bật nhiều thẻ để xem tác dụng khi gộp lại.</p>
     <div class="jb-tp-hang" style="width:100%"><select id="g5-tp" data-i18n-aria="g5_chon_tp" aria-label="Chọn thành phố"></select><span class="cay-sao" id="g5-xu"></span></div>
@@ -692,28 +736,29 @@
     <div class="hang-nut"><button class="nut nut-xanh" type="button" id="g5-xong" style="max-width:200px" data-i18n="g5_xong">✅ Chốt kế hoạch</button><button class="nut-nho" type="button" id="g5-tat-ca" data-i18n="g5_lam_lai">🔄 Bỏ chọn hết</button></div>
     <div class="the" id="g5-kq" hidden aria-live="polite"></div>
     <p class="phu g5-luu-y" data-i18n-html="g5_luu_y"></p>
+    <button class="nut-nho nut-quay-lai nut-ve-cuoi" data-ve="man-game" type="button" data-i18n="ve">⬅ Về</button>
   </section>
 
   <!-- GAME 1 -->
   <section class="man" id="man-g1">
-    <button class="nut-nho nut-quay-lai" data-ve="man-game" type="button" data-i18n="ve">⬅ Về</button>
     <h2 data-i18n="g1_ten">Nghe đoán chất</h2>
     <p class="phu" id="g1-luot"></p>
     <button class="nut nut-xanh" id="g1-nghe" type="button" data-i18n="nghe_lai" style="max-width:220px">🔊 Nghe</button>
     <div class="luoi" id="g1-chon"></div>
     <div class="the ket-qua" id="g1-kq" aria-live="polite"></div>
     <button class="nut nut-dam" id="g1-tiep" type="button" data-i18n="tiep" hidden>Tiếp ➜</button>
+    <button class="nut-nho nut-quay-lai nut-ve-cuoi" data-ve="man-game" type="button" data-i18n="ve">⬅ Về</button>
   </section>
 
   <!-- GAME 2 -->
   <section class="man" id="man-g2">
-    <button class="nut-nho nut-quay-lai" data-ve="man-game" type="button" data-i18n="ve">⬅ Về</button>
     <h2 data-i18n="g2_ten">Nơi nào nhiều hơn?</h2>
     <p class="phu" id="g2-luot"></p>
     <p id="g2-de"></p>
     <div class="luoi" id="g2-chon"></div>
     <div class="the ket-qua" id="g2-kq" aria-live="polite"></div>
     <button class="nut nut-dam" id="g2-tiep" type="button" data-i18n="tiep" hidden>Tiếp ➜</button>
+    <button class="nut-nho nut-quay-lai nut-ve-cuoi" data-ve="man-game" type="button" data-i18n="ve">⬅ Về</button>
   </section>
 
   <div class="goc-mam">
@@ -771,7 +816,19 @@ const CHU = {
     jb_tieu_de: "🎧 Hộp nhạc mùa hè",
     jb_goi_y: "Bấm ▶ để vạch trắng quét qua bản đồ. Mỗi chất có một nhạc cụ; màu càng đậm thì nốt càng cao, càng dày. Chạm vào bản đồ để nghe một điểm.",
     jb_thanh: "Chọn thời điểm", jb_cham: "🐢 Chậm", jb_tua: "⏩ Tua thời gian",
+    pt_tieu: "Phân tích không khí · {ngay}",
+    pt_dam_nhat: "đậm nhất: {noi}",
+    pt_doc_tieu: "Cách đọc phần trăm", pt_doc_tieu_nut: "📖 Cách đọc phân tích", jb_tab_tg: "🌍 Cả thế giới", jb_tab_tp: "🏙️ Một thành phố",
+    jb_tp_bam: "Bấm ▶ trên bản đồ để nghe {tp} suốt mùa hè. Nút 1× đổi tốc độ.",
+    pt_doc: "<p>Mỗi lúc, mỗi chất chỉ phủ khoảng 1/4 bản đồ (4 dải màu xen kẽ). Phần trăm là <b>bao nhiêu phần vùng đó đang ở mức Cao</b>, tức thuộc nhóm 15% chỗ đậm nhất của chất đó trong cả mùa hè.</p><ul><li><b>Khoảng 15%:</b> bình thường so với mùa hè.</li><li><b>Trên 15%:</b> lúc này nhiều chỗ ô nhiễm hơn bình thường.</li><li><b>Dưới 15%:</b> lúc này trong lành hơn bình thường.</li></ul><p>⚠️ Mỗi chất có thang màu riêng, nên không so phần trăm giữa các chất. Đây là tỉ lệ diện tích, không phải nồng độ (ppb, µg/m³). Con số cũng có thể đổi chỉ vì dải màu trượt sang vùng khác của thế giới.</p>",
+    pt_lo: "Đáng lo nhất lúc này:", pt_sach: "Trong lành nhất lúc này:",
+    pt_huong_dan: "Bấm ▶ trên bản đồ để tua thời gian; chạm một điểm để nghe điểm đó.",
     jb_tua_goi_y: "Đang tua. Chạm một điểm trên bản đồ để nghe điểm đó thay đổi theo thời gian.",
+    gm_nhom_nghe: "🎧 Nghe", gm_nhom_kham_pha: "🔎 Khám phá dữ liệu", gm_nhom_hanh_dong: "🕹️ Hành động & chiến lược",
+    gm_toi_da: "⭐ tối đa {sao}", gm_tt_tien: "✓ {so}/{tong} thành phố",
+    gm_mua_duoc: "Có {so} món mua được ngay! Bấm để trang trí", gm_con_thieu: "Còn {con} ⭐ nữa là mua được {ten}", gm_du_het: "Bạn đã có đủ mọi món đồ 🎉",
+    g1_ngan: "Nghe nhạc cụ, đoán chất", g2_ngan: "So hai nơi bằng tai", tt_ngan: "Đoán 5 câu, xem nhật ký", g4_ngan: "Tăng hay giảm? Cách giúp",
+    g3_ngan: "Rơi và né khói ô nhiễm", g5_ngan: "Chọn thẻ, làm sạch thành phố",
     cay_ten: "🌳 Cây của em", cay_ten_ngan: "Cây của em", cay_mo_ta: "Dùng sao để mua dáng cây, chậu và phụ kiện", cay_aria: "Cây của em đang được trang trí",
     cay_tab_cay: "🌱 Dáng cây", cay_tab_chau: "🪴 Chậu", cay_tab_pk: "🎀 Phụ kiện",
     cay_goi_y: "Chơi game để kiếm sao ⭐. Bấm món mới để mặc thử rồi quyết định mua; món đã có thì bấm để chọn, đeo hoặc tháo.",
@@ -942,7 +999,19 @@ const CHU = {
     jb_tieu_de: "🎧 Summer Jukebox",
     jb_goi_y: "Press ▶ and a white line sweeps across the map. Each substance has its own instrument; darker color means higher, denser notes. Tap the map to hear one spot.",
     jb_thanh: "Choose a time", jb_cham: "🐢 Slow", jb_tua: "⏩ Time-lapse",
+    pt_tieu: "Air analysis · {ngay}",
+    pt_dam_nhat: "darkest: {noi}",
+    pt_doc_tieu: "How to read the percentages", pt_doc_tieu_nut: "📖 How to read the analysis", jb_tab_tg: "🌍 Whole world", jb_tab_tp: "🏙️ One city",
+    jb_tp_bam: "Press ▶ on the map to hear {tp} all summer. The 1× button changes the speed.",
+    pt_doc: "<p>At any moment each substance covers only about 1/4 of the map (4 alternating color bands). The percentage is <b>how much of that area is at High level</b>, meaning among the darkest 15% for that substance over the whole summer.</p><ul><li><b>About 15%:</b> normal for the summer.</li><li><b>Above 15%:</b> more polluted spots than usual right now.</li><li><b>Below 15%:</b> cleaner than usual right now.</li></ul><p>⚠️ Each substance has its own color scale, so don't compare percentages between substances. This is a share of area, not a concentration (ppb, µg/m³). The number can also change just because a band slides over a different part of the world.</p>",
+    pt_lo: "Most worrying right now:", pt_sach: "Cleanest right now:",
+    pt_huong_dan: "Press ▶ on the map to time-lapse; tap a spot to hear it.",
     jb_tua_goi_y: "Time-lapse running. Tap a spot on the map to hear how it changes over time.",
+    gm_nhom_nghe: "🎧 Listen", gm_nhom_kham_pha: "🔎 Explore the data", gm_nhom_hanh_dong: "🕹️ Action & strategy",
+    gm_toi_da: "⭐ up to {sao}", gm_tt_tien: "✓ {so}/{tong} cities",
+    gm_mua_duoc: "{so} items you can buy now! Tap to decorate", gm_con_thieu: "{con} more ⭐ to buy {ten}", gm_du_het: "You own every item 🎉",
+    g1_ngan: "Hear it, guess the substance", g2_ngan: "Compare two places by ear", tt_ngan: "5 guesses, then the diary", g4_ngan: "Up or down? How to help",
+    g3_ngan: "Fall and dodge the smoke", g5_ngan: "Pick cards, clean a city",
     cay_ten: "🌳 My tree", cay_ten_ngan: "My tree", cay_mo_ta: "Spend stars on tree styles, pots and accessories", cay_aria: "Your decorated tree",
     cay_tab_cay: "🌱 Trees", cay_tab_chau: "🪴 Pots", cay_tab_pk: "🎀 Accessories",
     cay_goi_y: "Play games to earn stars ⭐. Tap a new item to try it on, then decide to buy; tap an owned item to pick, wear or remove it.",
@@ -1235,16 +1304,12 @@ const ICON_CHAT = [
 ];
 function iconChat(d, cls) { return '<svg class="icon-chat ' + (cls || "") + '" viewBox="0 0 32 32" aria-hidden="true">' + ICON_CHAT[d] + "</svg>"; }
 
-// Home: 4 icon chất khí bay vòng quanh Trái Đất, luôn đứng thẳng
+// Home: 4 icon chất khí đứng ở 4 góc quanh Trái Đất, bồng bềnh nhẹ; chỉ vệ tinh bay vòng
 (function () {
-  const td = $("trai-dat"), NS = "http://www.w3.org/2000/svg";
-  td.insertAdjacentHTML("beforeend", '<circle cx="100" cy="100" r="104" fill="none" stroke="rgba(90,63,208,.25)" stroke-width="1.5" stroke-dasharray="2 7"/>');
-  for (let d = 0; d < 4; d++) {
-    const g = document.createElementNS(NS, "g"); g.setAttribute("class", "td-khi");
-    g.style.animationDelay = (-d * 4.5) + "s";
-    g.innerHTML = '<g class="td-khi-dung" style="animation-delay:' + (-d * 4.5) + 's"><svg x="87" y="-17" width="26" height="26" viewBox="0 0 32 32">' + ICON_CHAT[d] + "</svg></g>";
-    td.appendChild(g);
-  }
+  const td = $("trai-dat"), GOC = [[2, 4], [198, 4], [198, 196], [2, 196]]; // CO trên trái, PM trên phải, NOx dưới phải, O3 dưới trái
+  GOC.forEach(function (g, d) {
+    td.insertAdjacentHTML("beforeend", '<g class="td-khi4" style="animation-delay:' + (-d * 0.8) + 's"><svg x="' + (g[0] - 17) + '" y="' + (g[1] - 17) + '" width="34" height="34" viewBox="0 0 32 32">' + ICON_CHAT[d] + "</svg></g>");
+  });
 })();
 
 // ---------- THÀNH PHỐ ----------
@@ -1419,9 +1484,43 @@ function veJb() {
   jbCanvas.setAttribute("aria-label", T("aria_anh", { so: k.so }));
   if (tam) datTam(tam.xGoc, tam.yGoc, false);
 }
-function moJb() { moMan("man-jb"); veJb(); $("jb-the").innerHTML = T("jb_mo_dau"); capNutPhat(); }
+// Phân tích chất lượng không khí của khung đang xem (tính từ lưới mức màu NASA)
+function phanTichKhung(k) {
+  const dong = [];
+  for (let d = 0; d < 4; d++) {
+    let tong = 0, cao = 0, max = -1, gxM = 0, gyM = 0;
+    for (let gx = 0; gx < LW; gx++) {
+      if (daiTai(gx * O + O / 2, k.so) !== d) continue;
+      for (let gy = Math.floor(Y0 / O); gy < Math.ceil(Y1 / O); gy++) {
+        const v = k.luoi[gy * LW + gx]; if (v === KHONG) continue;
+        tong++; if (v / 250 >= NGUONG[d][1]) cao++;
+        if (v > max) { max = v; gxM = gx; gyM = gy; }
+      }
+    }
+    if (!tong) continue;
+    const lat = viTuY(gyM * O + O / 2), lon = kinhTuX(gxM * O + O / 2), tp = tpGanNhat(lat, lon);
+    dong.push({ d: d, pt: cao / tong, noi: tp ? T("gan", { ten: tp.co + " " + tenTP(tp) }).replace(/^./, function (c) { return c.toLowerCase(); }) : ghiToaDo(lat, lon), tp: tp });
+  }
+  // 3 thành phố đáng lo nhất ở khung này: màu đậm hơn nhiều nơi nhất (so trên thang của chất đang phủ thành phố)
+  const xep = CAC_TP.map(function (tp) { const m = mucTP(k, tp); return m ? { tp: tp, m: m, pv: phanVi(m.v, m.d) } : null; })
+    .filter(Boolean).sort(function (a, b) { return b.pv - a.pv; });
+  const lo = xep.slice(0, 3), sach = xep.slice(-2).reverse();
+  let h = '<div class="jb-pt"><p class="jb-pt-tieu">📊 ' + T("pt_tieu", { ngay: ngayKhung(k.so) }) + "</p>";
+  h += dong.map(function (x) {
+    return '<div class="jb-pt-dong" style="--m:' + MAU[x.d] + '">' + iconChat(x.d) + '<span class="jb-pt-ten">' + T("ten_ngan")[x.d] + "</span>" +
+      '<span class="jb-pt-thanh"><i style="width:' + Math.round(x.pt * 100) + '%"></i></span><span class="jb-pt-so">' + Math.round(x.pt * 100) + "%</span>" +
+      '<span class="jb-pt-noi">' + T("pt_dam_nhat", { noi: x.noi }) + "</span></div>";
+  }).join("");
+  const ten = function (e) { return e.tp.co + " " + tenTP(e.tp) + " (" + T("ten_ngan")[e.m.d] + ", " + T("doan_pv", { pv: Math.min(99, Math.round(e.pv * 100)) }) + ")"; };
+  if (lo.length) h += "<p>⚠️ <b>" + T("pt_lo") + "</b> " + lo.map(ten).join("; ") + "</p>";
+  if (sach.length) h += "<p>🌿 <b>" + T("pt_sach") + "</b> " + sach.map(ten).join("; ") + "</p>";
+  h += '<p class="jb-pt-chu">' + T("pt_huong_dan") + "</p></div>";
+  return h;
+}
+function capPhanTich() { if (cheDo === "tg" && (!tam || tua)) $("jb-the").innerHTML = phanTichKhung(KHUNG[jbK]); }
+function moJb() { moMan("man-jb"); veJb(); datCheDo("tg"); }
 $("nut-jb").addEventListener("click", moJb);
-$("jb-thanh").addEventListener("input", function (e) { dungQuet(); dungTua(); dungTP(); jbK = +e.target.value; veJb(); });
+$("jb-thanh").addEventListener("input", function (e) { dungQuet(); dungTua(); dungTP(); jbK = +e.target.value; veJb(); if (cheDo === "tg") { tam = null; $("jb-tam").style.display = "none"; } capPhanTich(); });
 function sangChip(d) { document.querySelectorAll("#jb-chip .chip").forEach(function (c) { c.classList.toggle("sang", +c.dataset.d === d); }); }
 function capNutPhat() { /* nút quét đã bỏ */ }
 // Quét: 36 bước, mỗi bước 160 điểm ảnh gốc; 6 vùng vĩ độ từ 72°B đến 42°N
@@ -1445,9 +1544,11 @@ let tua = null;
 // Tốc độ tua: 0,5× / 1× / 2× (bấm nút trên khung NASA để đổi)
 const TOC_TUA = [{ ten: "🐢 0,5×", tenEn: "🐢 0.5×", ms: 450 }, { ten: "1×", tenEn: "1×", ms: 220 }, { ten: "🐇 2×", tenEn: "🐇 2×", ms: 110 }];
 let tocTua = 1;
+let cheDo = "tg"; // tg = cả thế giới, tp = một thành phố
 function capNutTua() {
-  $("jb-tua").textContent = tua ? "⏸" : "▶";
-  $("jb-tua").setAttribute("aria-pressed", String(!!tua));
+  const chay = !!tua || (typeof tpChay !== "undefined" && !!tpChay);
+  $("jb-tua").textContent = chay ? "⏸" : "▶";
+  $("jb-tua").setAttribute("aria-pressed", String(chay));
   const t = TOC_TUA[tocTua]; $("jb-toc").textContent = ngonNgu === "en" ? t.tenEn : t.ten;
   jbCham = tocTua === 0;
 }
@@ -1456,7 +1557,7 @@ function chayTua() {
   const p = dangPhat && tua ? dangPhat : batDauPhat();
   clearInterval(tua);
   tua = setInterval(function () {
-    jbK = (jbK + 1) % KHUNG.length; $("jb-thanh").value = jbK; veJb();
+    jbK = (jbK + 1) % KHUNG.length; $("jb-thanh").value = jbK; veJb(); $("jb-the").innerHTML = phanTichKhung(KHUNG[jbK]);
     if (tam && dangPhat === p) {
       const k = KHUNG[jbK], m = mucTai(k, tam.xGoc, tam.yGoc);
       if (m) { sangChip(m.d); NHAC[m.d](layCtx(), p.tong, layCtx().currentTime + 0.02, tanSo(m.d, m.v, 0), 0.3 + 0.7 * m.v); }
@@ -1466,10 +1567,10 @@ function chayTua() {
   capNutTua();
 }
 $("jb-tua").addEventListener("click", function () {
+  if (cheDo === "tp") { $("jb-tp-phat").click(); capNutTua(); return; }
   if (tua) { dungTua(); return; }
   dungQuet(); dungDoc(); dungTP();
   if (jbK >= KHUNG.length - 1) { jbK = 0; $("jb-thanh").value = 0; veJb(); }
-  $("jb-the").innerHTML = T("jb_tua_goi_y");
   chayTua();
 });
 $("jb-toc").addEventListener("click", function () {
@@ -1552,7 +1653,7 @@ function veChonTP() {
 function dungTP() {
   if (!tpChay) return;
   clearInterval(tpChay.hen); tpChay = null;
-  $("jb-tp-phat").textContent = T("jb_tp_phat"); sangChip(-1); dungAm();
+  $("jb-tp-phat").textContent = T("jb_tp_phat"); capNutTua(); sangChip(-1); dungAm();
 }
 $("jb-tp").addEventListener("change", function () {
   dungTP();
@@ -1564,15 +1665,15 @@ $("jb-tp-phat").addEventListener("click", function () {
   dungQuet(); dungTua(); dungDoc();
   const tp = CAC_TP.find(function (x) { return x.id === $("jb-tp").value; });
   if (!tp) return;
-  const p = batDauPhat(), ctx = layCtx(), nhip = jbCham ? 0.26 : 0.13;
+  const p = batDauPhat(), ctx = layCtx(), nhip = [0.26, 0.13, 0.065][tocTua];
   const xG = xTuKinh(tp.lon), yG = yTuVi(tp.lat);
   datTam(xG, yG, false);
   let i = 0;
   tpChay = { hen: null, tp: tp };
-  this.textContent = T("jb_tp_dung");
+  this.textContent = T("jb_tp_dung"); capNutTua();
   function buoc() {
     if (!tpChay || dangPhat !== p) { // âm thanh đã bị dừng ở chỗ khác
-      if (tpChay) { clearInterval(tpChay.hen); tpChay = null; $("jb-tp-phat").textContent = T("jb_tp_phat"); }
+      if (tpChay) { clearInterval(tpChay.hen); tpChay = null; $("jb-tp-phat").textContent = T("jb_tp_phat"); capNutTua(); }
       return;
     }
     if (i >= KHUNG.length) { ketThucTP(tp); return; }
@@ -1595,7 +1696,7 @@ $("jb-tp-phat").addEventListener("click", function () {
 });
 function ketThucTP(tp) {
   clearInterval(tpChay.hen); tpChay = null; $("jb-tp-vach").style.width = "100%";
-  $("jb-tp-phat").textContent = T("jb_tp_phat"); sangChip(-1);
+  $("jb-tp-phat").textContent = T("jb_tp_phat"); capNutTua(); sangChip(-1);
   setTimeout(function () { if (!tpChay && !quet && !tua) dungAm(); }, 1500);
   const nk = nhatKy(tp), dong = [];
   for (let d = 0; d < 4; d++) {
@@ -1608,6 +1709,30 @@ function ketThucTP(tp) {
   $("jb-the").innerHTML = T("jb_tp_xong", { tp: tp.co + " " + tenTP(tp) }) + dong.join("<br>");
   loaChu($("jb-the").innerHTML.replace(/<br>/g, ". "));
 }
+
+// ---------- HỘP NHẠC: 2 TAB CHẾ ĐỘ ----------
+function noiDungTP() {
+  const tp = CAC_TP.find(function (x) { return x.id === $("jb-tp").value; });
+  return '<p class="phu" style="margin:0">' + T("jb_tp_goi_y") + "</p><p style=\"margin:6px 0 0\">" + T("jb_tp_bam", { tp: tp ? tp.co + " " + tenTP(tp) : "" }) + "</p>";
+}
+function datCheDo(c) {
+  dungQuet(); dungTua(); dungTP(); dungDoc();
+  cheDo = c;
+  document.querySelectorAll("#jb-tab button").forEach(function (b) { b.setAttribute("aria-selected", String(b.dataset.che === c)); });
+  $("jb-che-tp").hidden = c !== "tp";
+  $("jb-cach-doc").hidden = c !== "tg"; $("jb-cach-doc").open = false;
+  if (c === "tp") {
+    const tp = CAC_TP.find(function (x) { return x.id === $("jb-tp").value; });
+    if (tp) datTam(xTuKinh(tp.lon), yTuVi(tp.lat), false);
+    $("jb-the").innerHTML = noiDungTP();
+  } else {
+    tam = null; $("jb-tam").style.display = "none"; $("jb-tp-vach").style.width = "0";
+    $("jb-the").innerHTML = phanTichKhung(KHUNG[jbK]);
+  }
+  capNutTua();
+}
+document.querySelectorAll("#jb-tab button").forEach(function (b) { b.addEventListener("click", function () { datCheDo(b.dataset.che); }); });
+$("jb-tp").addEventListener("change", function () { if (cheDo === "tp") $("jb-the").innerHTML = noiDungTP(); });
 
 // ---------- THÁM TỬ ----------
 let ttTP = null, ttPhat = null;
@@ -1851,8 +1976,20 @@ $("hoc-panel").addEventListener("toggle", function () {
 let tongSao = 0;
 try { tongSao = parseInt(localStorage.getItem("aj-sao"), 10) || 0; } catch (e) { /* bỏ qua */ }
 function congSao(n) { tongSao += n; try { localStorage.setItem("aj-sao", String(tongSao)); } catch (e) { /* bỏ qua */ } veSao(); }
-function veSao() { $("tong-sao").textContent = T("tong_sao", { sao: tongSao }); }
-$("nut-game").addEventListener("click", function () { moMan("man-game"); });
+function veSao() {
+  $("tong-sao").textContent = "⭐ " + tongSao;
+  if (typeof veToanCay === "function") {
+    $("gm-cay-hinh").innerHTML = veToanCay(cay);
+    const moi = KHO.filter(function (m) { return cay.coRoi.indexOf(m.id) < 0; }).sort(function (a, b) { return a.gia - b.gia; });
+    const du = moi.filter(function (m) { return m.gia <= tongSao; }), sap = moi.find(function (m) { return m.gia > tongSao; });
+    $("gm-muc-tieu").textContent = du.length ? T("gm_mua_duoc", { so: du.length }) : sap ? T("gm_con_thieu", { con: sap.gia - tongSao, ten: tenDo(sap) }) : T("gm_du_het");
+  }
+  document.querySelectorAll(".gm-sao").forEach(function (e) {
+    if (e.dataset.sao === "tt") { let xong = []; try { xong = JSON.parse(localStorage.getItem("aj-tt-doan") || "[]"); } catch (er) { /* bỏ qua */ } e.textContent = T("gm_tt_tien", { so: xong.length, tong: CAC_TP.length }); }
+    else e.textContent = T("gm_toi_da", { sao: e.dataset.sao });
+  });
+}
+$("nut-game").addEventListener("click", function () { moMan("man-game"); veSao(); });
 function ngauNhien(n) { return Math.floor(Math.random() * n); }
 function tronMang(a) { for (let i = a.length - 1; i > 0; i--) { const j = ngauNhien(i + 1); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
 // Điểm ngẫu nhiên đọc được trong 1 dải (ưu tiên thành phố, nếu không thì điểm bất kỳ)
@@ -2684,7 +2821,7 @@ function apDung() {
   $("nut-doi-tieng").textContent = ngonNgu === "vi" ? "EN" : "VI";
   veDsTT(); veHoc(); veSao(); veWelcome(); veChonTP(); capNutTua();
   document.querySelectorAll("#jb-chip .chip").forEach(function (c) { const d = +c.dataset.d; c.innerHTML = iconChat(d) + T("ten_ngan")[d]; c.title = T("nhac_cu")[d]; });
-  if ($("man-jb").classList.contains("hien")) { veJb(); $("jb-the").innerHTML = T("jb_mo_dau"); }
+  if ($("man-jb").classList.contains("hien")) { veJb(); $("jb-the").innerHTML = cheDo === "tp" ? noiDungTP() : phanTichKhung(KHUNG[jbK]); }
   if ($("man-tt").classList.contains("hien")) { veTT(); veDoan(); }
   if ($("man-cay").classList.contains("hien")) veManCay();
   if (window.veChonG5) veChonG5();
