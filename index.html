@@ -546,6 +546,9 @@
   .jb-dk #jb-tua[aria-pressed="true"] { opacity: .45; }
   .jb-dk #jb-tua[aria-pressed="true"]:hover, .jb-dk #jb-tua[aria-pressed="true"]:focus-visible { opacity: 1; }
   .jb-dk #jb-toc { position: absolute; top: 8px; right: 8px; }
+  .jb-ngay-nhan { position: absolute; top: 10px; left: 10px; padding: 3px 10px; border-radius: 999px; background: rgba(255,255,255,.9); color: #1e6b2f;
+    font-size: .78rem; font-weight: 800; font-variant-numeric: tabular-nums; pointer-events: none; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+  .jb-ngay-nhan:empty { display: none; }
   .jb-dk-thanh { position: absolute; left: 10px; right: 10px; bottom: 6px; width: auto; height: 20px; margin: 0; padding: 0; background: none; border: 0; box-shadow: none;
     -webkit-appearance: none; appearance: none; cursor: pointer; accent-color: #fff; }
   .jb-dk-thanh::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: rgba(255,255,255,.7); }
@@ -641,6 +644,17 @@
   .jb-the-hop { display: flex; flex-direction: column; gap: 8px; }
   .jb-cach-doc { border-top: 1px dashed #b7dfc0; padding-top: 6px; }
   .jb-cach-doc summary { justify-content: flex-start; padding: 4px 0; font-size: .9rem; }
+  .jb-cach-doc .jb-pt-doc { background: none; padding: 4px 0 0; } /* bỏ nền xanh nhạt trong "Cách đọc phân tích" */
+  /* Nút "Luật chơi" kiểu link giống "Câu chuyện về góc xanh nhỏ" ở intro 1: tam giác xanh + chữ gạch chân, không nền */
+  .g5-luat { width: 100%; background: none; box-shadow: none; padding: 0; }
+  .g5-luat summary { justify-content: center; gap: 8px; padding: 6px 0; font-size: .95rem; font-weight: 700; color: var(--vien); background: none; border: 0; box-shadow: none; }
+  .g5-luat summary::after { content: none; }
+  .g5-luat summary span { text-decoration: underline; text-underline-offset: 3px; }
+  .g5-luat summary svg { width: 13px; height: 13px; fill: var(--mau-nut); flex-shrink: 0; transition: transform .2s; }
+  .g5-luat[open] summary svg { transform: rotate(90deg); }
+  .g5-luat summary:hover { color: var(--mau-nut); }
+  .g5-luat-nd { gap: 6px; padding-bottom: 6px; font-size: .88rem; } .g5-luat-nd p { margin: 0; line-height: 1.45; }
+  .g5-luat-meo { color: #52796f; border-top: 1px dashed #d8f3dc; padding-top: 6px; }
   /* Nút "⬅ Về" cuối trang: nút trắng nổi, không viền, bóng xanh */
   .nut-quay-lai.nut-ve-cuoi { border: none; background: #fff; color: var(--vien); border-radius: 999px; padding: 11px 26px; font-size: 1rem; font-weight: 800;
     box-shadow: 0 4px 0 #95d5b2; margin-top: 8px; transition: transform .1s, box-shadow .1s; }
@@ -863,6 +877,7 @@
       <div class="jb-dk" role="group" data-i18n-aria="jb_dk_aria" aria-label="Tua thời gian">
         <button class="jb-dk-nut" id="jb-tua" type="button" aria-pressed="false" data-i18n-aria="jb_tua" aria-label="Tua thời gian">▶</button>
         <button class="jb-dk-nut jb-dk-toc" id="jb-toc" type="button" data-i18n-aria="jb_toc_aria" aria-label="Đổi tốc độ tua">1×</button>
+        <span class="jb-ngay-nhan" id="jb-ngay-nhan" aria-hidden="true"></span>
         <input type="range" class="jb-dk-thanh" id="jb-thanh" min="0" max="0" value="0" data-i18n-aria="jb_thanh" aria-label="Chọn thời điểm">
       </div>
     </div>
@@ -1009,7 +1024,6 @@
   <!-- GAME 5: GIẢI PHÁP XANH -->
   <section class="man" id="man-g5">
     <h2 data-i18n="g5_tieu_de">💡 Giải pháp xanh</h2>
-    <p class="phu" data-i18n="g5_goi_y">Chọn thẻ giải pháp để làm sạch không khí. Bấm một thẻ để xem riêng tác dụng của nó; bật nhiều thẻ để xem tác dụng khi gộp lại.</p>
     <div class="jb-tp-hang" style="width:100%"><select id="g5-tp" data-i18n-aria="g5_chon_tp" aria-label="Chọn thành phố"></select><span class="cay-sao" id="g5-xu"></span></div>
     <div class="khung-anh g5-khung"><svg id="g5-pho" viewBox="0 0 320 190" role="img" data-i18n-aria="g5_pho_aria" aria-label="Hình thành phố"></svg></div>
     <div class="the g5-bang"><div id="g5-thanh"></div><p class="phu g5-chu-giai" data-i18n="g5_chu_giai">Khung nhạt: lúc đầu · phần đậm: sau khi dùng giải pháp · vạch: ranh giới Thấp / Vừa / Cao</p><p id="g5-tom" aria-live="polite"></p></div>
@@ -1017,6 +1031,10 @@
     <div class="luoi" id="g5-the"></div>
     <div class="hang-nut"><button class="nut nut-xanh" type="button" id="g5-xong" style="max-width:200px" data-i18n="g5_xong">✅ Chốt kế hoạch</button><button class="nut-nho" type="button" id="g5-tat-ca" data-i18n="g5_lam_lai">🔄 Bỏ chọn hết</button></div>
     <div class="the" id="g5-kq" hidden aria-live="polite"></div>
+    <details class="hoc-panel g5-luat" id="g5-luat">
+      <summary><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1 L11 6 L2 11 Z"/></svg><span data-i18n="g5_luat_nut">Luật chơi</span></summary>
+      <div class="hoc-panel-noi-dung g5-luat-nd" data-i18n-html="g5_luat"></div>
+    </details>
     <p class="phu g5-luu-y" data-i18n-html="g5_luu_y"></p>
   </section>
 
@@ -1102,7 +1120,7 @@ const CHU = {
     dang_doc_mau: "Đang đọc màu khung {i}/{n}…", san_sang: "Đã đọc xong {n} khung hình NASA ✓", khong_khung: "Chưa có khung hình nào được nhúng.",
     ten_chat: ["Cacbon monoxit (CO)", "Bụi mịn (PM2.5)", "Nitơ oxit (NOx)", "Ozon (O₃)"],
     ten_ngan: ["CO", "PM2.5", "NOx", "O₃"],
-    nhac_cu: ["🎺 kèn trầm", "🪵 mộc cầm", "🚗 tiếng gảy điện tử", "🔔 chuông thủy tinh"],
+    nhac_cu: ["🎻 cello kéo", "🎶 kalimba", "🚗 tiếng gảy điện tử", "🔔 chuông thủy tinh"],
     muc: { khong: "không đọc được", thap: "Thấp", vua: "Vừa", cao: "Cao" },
     jb_tieu_de: "🎧 Hộp nhạc mùa hè",
     jb_goi_y: "Bấm ▶ để vạch trắng quét qua bản đồ. Mỗi chất có một nhạc cụ; màu càng đậm thì nốt càng cao, càng dày. Chạm vào bản đồ để nghe một điểm.",
@@ -1111,7 +1129,7 @@ const CHU = {
     pt_tp_tieu: "Phân tích không khí · {tp}", pt_tp_phu: "Cả mùa hè 2024 (01/07 – 14/09)",
     pt_tp_dong: "TB <span class=\"muc muc-{lop}\">{muc}</span> · đậm nhất {ngay}", pt_tp_luc_nay: "◀ lúc này: {muc}",
     pt_tp_khong: "không đi qua dải này", pt_tp_chua: "chưa đi qua dải này", nx_tieu: "🌱 Mầm Xanh nhận xét", nx_noi_bat: "⭐ {chat} là chất nổi bật nhất ở {tp}: đậm hơn {hon} thành phố khác (hạng {hang}/{n}).", nx_tang: "📈 {chat} đậm dần về cuối hè: đầu hè đậm hơn {p1}% bản đồ, cuối hè đậm hơn {p2}%.", nx_giam: "📉 {chat} nhạt dần về cuối hè: đầu hè đậm hơn {p1}% bản đồ, cuối hè chỉ còn {p2}%.", nx_deu: "📊 Các chất khá đều suốt mùa hè, không tăng hay giảm rõ.", nx_dinh: "🔥 Lúc đậm nhất: ngày {ngay}, {chat} đậm hơn {pv}% bản đồ.", nx_nhe: "🌿 {chat} ở đây nhẹ hơn phần lớn thành phố (hạng {hang}/{n}).", nx_khong_nhe: "🌿 Không chất nào nhẹ hẳn: cả 4 chất đều ở nửa đậm của danh sách 30 thành phố.", pt_tp_ss: "🏙️ Cả mùa hè, so với 30 thành phố (hạng 1 = đậm nhất):", pt_tp_lo: "Đáng lo nhất:", pt_tp_nhe: "Nhẹ nhất:", pt_tp_hang: "hạng {hang}/{n}",
-    pt_doc_tp: "<p>🗺️ Màu <b>càng đậm</b> = chất đó <b>càng nhiều</b>. Mỗi lúc thành phố chỉ nằm dưới 1 dải màu.</p><ul><li><b>%</b>: khi dải chất đó đi qua, bao nhiêu lần thành phố thuộc nhóm <b>đậm nhất</b> bản đồ. Vd <b>94%</b> = cứ 100 lần thì 94 lần rất đậm.</li><li><b>Hạng</b>: đứng thứ mấy về độ đậm trong 30 thành phố. <b>Hạng 1</b> = đậm nhất.</li><li><b>🌱 Mầm Xanh nhận xét</b>: chất nổi bật nhất, chất tăng/giảm rõ nhất giữa đầu và cuối hè, lúc đậm nhất, và chất nhẹ nhất so với các thành phố khác.</li></ul><p>💡 % cao mà hạng thấp? Vì thành phố nào cũng hay đậm, giống cả lớp đều được điểm cao: bạn vẫn có thể đứng thứ 19.</p><p>⚠️ Đây là độ đậm của màu, không phải số đo thật. Không so % giữa các chất.</p>",
+    pt_doc_tp: "<p>Màu <b>càng đậm</b> = chất đó <b>càng nhiều</b>. Mỗi lúc thành phố chỉ nằm dưới 1 dải màu.</p><ul><li><b>%</b>: khi dải chất đó đi qua, bao nhiêu lần thành phố thuộc nhóm <b>đậm nhất</b> bản đồ. Vd <b>94%</b> = cứ 100 lần thì 94 lần rất đậm.</li><li><b>Hạng</b>: đứng thứ mấy về độ đậm trong 30 thành phố. <b>Hạng 1</b> = đậm nhất.</li></ul><p>💡 % cao mà hạng thấp? Vì thành phố nào cũng hay đậm, giống cả lớp đều được điểm cao: bạn vẫn có thể đứng thứ 19.</p><p>⚠️ Đây là độ đậm của màu, không phải số đo thật. Không so % giữa các chất.</p>",
     pt_dam_nhat: "đậm nhất: {noi}",
     pt_doc_tieu: "Cách đọc phần trăm", pt_doc_tieu_nut: "📖 Cách đọc phân tích", jb_tab_tg: "🌍 Cả thế giới", jb_tab_tp: "🏙️ Một thành phố", jb_tab_chat: "🎵 4 chất khí", jb_vung_aria: "Chọn châu lục", jb_tp_trai: "Xem thành phố bên trái", jb_tp_phai: "Xem thành phố bên phải",
     jb_tp_bam: "Bấm ▶ trên bản đồ để nghe {tp} suốt mùa hè. Nút 1× đổi tốc độ.",
@@ -1134,11 +1152,11 @@ const CHU = {
     cay_mua_nut: "Mua ({gia} ⭐)", cay_khong: "Không", cay_bo_thu: "Bỏ thử", cay_nhan_thu: "👀 Mặc thử",
     tt_thuong: "⭐ +1 sao vì đã nghe hết nhật ký của {ten}!",
     g5_ten: "Giải pháp xanh", g5_tieu_de: "💡 Giải pháp xanh", g5_mo_ta: "Chọn thẻ giải pháp để làm sạch không khí cho một thành phố ô nhiễm",
-    g5_goi_y: "Chọn thẻ giải pháp để làm sạch không khí. Bấm một thẻ để xem riêng tác dụng của nó; bật nhiều thẻ để xem tác dụng khi gộp lại.",
+    g5_luat_nut: "Luật chơi", g5_luat: "<p>🏙️ Thành phố đang ô nhiễm. Hãy làm sạch không khí!</p><p>🪙 Bạn có <b>10 xu</b>. Mỗi thẻ giải pháp tốn 1–4 xu.</p><p>🃏 Bấm thẻ để bật, xem ô nhiễm giảm bao nhiêu. Bấm lại để tắt.</p><p>⭐ Giảm trung bình từ <b>30%</b> được 1 sao, <b>42%</b> được 2 sao, <b>50%</b> được 3 sao.</p><p>➕ Gộp nhiều thẻ thì mức giảm không cộng thẳng: mỗi thẻ chỉ giảm phần ô nhiễm còn lại. Ozon giảm chậm hơn vì nó không thải ra trực tiếp.</p><p class=\"g5-luat-meo\">💡 Mẹo: thẻ rẻ cũng có thể rất mạnh. Kết hợp nhiều loại thẻ để giảm đều cả 4 chất.</p>", g5_goi_y: "Chọn thẻ giải pháp để làm sạch không khí. Bấm một thẻ để xem riêng tác dụng của nó; bật nhiều thẻ để xem tác dụng khi gộp lại.",
     g5_chon_tp: "Chọn thành phố", g5_pho_aria: "Hình thành phố: khói, xe cộ, nhà máy và các giải pháp xanh đang dùng",
     g5_xu: "🪙 Còn {con}/{tong}",
     g5_chu_giai: "Khung nhạt: lúc đầu · phần đậm: sau khi dùng giải pháp · vạch: ranh giới Thấp / Vừa / Cao",
-    g5_tom_0: "Mức ban đầu lấy từ bản đồ NASA của thành phố này (so với cả thế giới). Hãy chọn thẻ giải pháp nhé!",
+    g5_tom_0: "👆 Chọn thẻ giải pháp bên dưới nhé!",
     g5_tom: "Gộp <b>{so} giải pháp</b>: ô nhiễm trung bình giảm <b>{pt}%</b>.",
     g5_het_xu: "Không đủ 🪙 cho thẻ này (cần {xu}). Bỏ bớt một thẻ khác nhé!",
     g5_rieng: "Nếu chỉ dùng riêng giải pháp này:",
@@ -1157,7 +1175,7 @@ const CHU = {
       "Bộ lọc trên ống khói giữ lại bụi và một phần khí độc trước khi thải ra ngoài.",
       "Cháy rừng thải ra rất nhiều CO và khói bụi, có khi bay xa hàng nghìn km như mùa hè 2024 ở Bắc Mỹ."
     ],
-    g5_luu_y: "⚠️ Mức ban đầu lấy từ bản đồ NASA trong app. <b>Mức giảm của từng thẻ là con số minh họa để học</b>, không phải kết quả mô phỏng của NASA. Khi gộp nhiều giải pháp, mức giảm không cộng thẳng, vì mỗi giải pháp chỉ giảm phần ô nhiễm còn lại. Ozon giảm chậm hơn vì nó không thải ra trực tiếp.",
+    g5_luu_y: "⚠️ Mức ban đầu lấy từ bản đồ NASA; <b>mức giảm của từng thẻ là con số minh họa</b> để học.",
     g3_ten: "🌫️ Hành trình hạt bụi", g3_ten_ngan: "Hành trình hạt bụi", g3_mo_ta: "Hạt bụi rơi qua các tầng khí quyển, né khói ô nhiễm để xuống tới mặt đất",
     g3_doc_tinh: "☠️ Độc tính", g3_aria: "Khung chơi: chạm hoặc kéo sang trái, phải để hạt bụi né khói; trên máy tính dùng phím mũi tên trái, phải",
     g3_dk: "Chạm hoặc kéo ngón tay sang trái, phải (máy tính: rê chuột hoặc phím ← →) để hạt bụi né khói.",
@@ -1255,7 +1273,7 @@ const CHU = {
     nguon_noi_dung: "<p class=\"wc-nguon-mo-dau\">Mô hình GEOS-CF của NASA theo dõi bốn chất trong không khí: <b>CO, bụi mịn PM2.5, NOx và Ozon</b>.</p><ul><li><b>Khung hình:</b> NASA Scientific Visualization Studio, <a href=\"https://svs.gsfc.nasa.gov/5533\" target=\"_blank\" rel=\"noopener\">“Air Quality Model Runs” (SVS 5533)</a>, bộ <i>AirQuality_MapWithLabels</i> 5760×3240, 1.800 khung.</li><li><b>Mô hình:</b> GEOS-CF (Goddard Earth Observing System Composition Forecasting) của NASA GMAO.</li><li><b>Thời gian:</b> 1/7 – 14/9/2024, mùa cháy rừng Bắc Mỹ. App ước tính mỗi khung = 1 giờ (1.800 khung ÷ 75 ngày); SVS không ghi rõ điều này.</li></ul>",
     doc: {
       "man-home": "Chào bạn! Mình là Mầm Xanh. Hôm nay mình sẽ nghe bầu trời Trái Đất bằng bản đồ của NASA. Bấm Câu chuyện Mầm Xanh để nghe chuyện của tụi mình, Hộp nhạc mùa hè để nghe bản đồ, hoặc Games để chơi.",
-      "man-jb": "Đây là hộp nhạc mùa hè. Bản đồ có bốn dải màu xen kẽ. Chọn một thành phố, rồi bấm nút phát ở giữa bản đồ để nghe không khí ở đó suốt mùa hè; nút ở góc trên bên phải đổi tốc độ chậm, bình thường hoặc nhanh. Mở tab 4 chất khí để làm quen nhạc cụ của từng chất: kèn trầm là CO, mộc cầm là bụi mịn, tiếng gảy là NOx, chuông là Ozon. Nốt càng cao và càng dày nghĩa là màu càng đậm.",
+      "man-jb": "Đây là hộp nhạc mùa hè. Bản đồ có bốn dải màu xen kẽ. Chọn một thành phố, rồi bấm nút phát ở giữa bản đồ để nghe không khí ở đó suốt mùa hè; nút ở góc trên bên phải đổi tốc độ chậm, bình thường hoặc nhanh. Mở tab 4 chất khí để làm quen nhạc cụ của từng chất: cello là CO, kalimba là bụi mịn, tiếng gảy là NOx, chuông là Ozon. Nốt càng cao và càng dày nghĩa là màu càng đậm.",
       "man-tt": "Thám tử không khí: mỗi ván app chọn sẵn một chất và một thời điểm, rồi hỏi 5 thành phố. Nghe âm thanh ở chỗ ghim trên bản đồ, nốt càng cao và dày là màu càng đậm, rồi đoán Thấp, Vừa hay Cao. Bấm Nghe mẫu nếu chưa chắc. Hết ván sẽ có nhật ký so đáp án thật.",
       "man-hoc": "Bốn vị khách trong không khí là CO, bụi mịn PM2.5, NOx và Ozon. Bấm nghe để nhớ nhạc cụ của từng chất.",
       "man-game": "Nhóm Nghe và đoán có Thám tử không khí và Cân bầu trời. Nhóm Hành động có Hành trình hạt bụi và Giải pháp xanh. Sao kiếm được dùng để trang trí cây của em.",
@@ -1288,7 +1306,7 @@ const CHU = {
     dang_doc_mau: "Reading colors of frame {i}/{n}…", san_sang: "Read {n} NASA frames ✓", khong_khung: "No frames are embedded yet.",
     ten_chat: ["Carbon monoxide (CO)", "Fine particles (PM2.5)", "Nitrogen oxides (NOx)", "Ozon (O₃)"],
     ten_ngan: ["CO", "PM2.5", "NOx", "O₃"],
-    nhac_cu: ["🎺 low horn", "🪵 marimba", "🚗 electric pluck", "🔔 glass bell"],
+    nhac_cu: ["🎻 bowed cello", "🎶 kalimba", "🚗 electric pluck", "🔔 glass bell"],
     muc: { khong: "unreadable", thap: "Low", vua: "Medium", cao: "High" },
     jb_tieu_de: "🎧 Summer Jukebox",
     jb_goi_y: "Press ▶ and a white line sweeps across the map. Each substance has its own instrument; darker color means higher, denser notes. Tap the map to hear one spot.",
@@ -1297,7 +1315,7 @@ const CHU = {
     pt_tp_tieu: "Air analysis · {tp}", pt_tp_phu: "Whole summer 2024 (1 Jul – 14 Sep)",
     pt_tp_dong: "avg <span class=\"muc muc-{lop}\">{muc}</span> · darkest {ngay}", pt_tp_luc_nay: "◀ now: {muc}",
     pt_tp_khong: "never inside this band", pt_tp_chua: "not inside this band yet", nx_tieu: "🌱 Sprout's notes", nx_noi_bat: "⭐ {chat} stands out most in {tp}: darker than {hon} other cities (rank {hang}/{n}).", nx_tang: "📈 {chat} gets darker toward late summer: darker than {p1}% of the map early on, {p2}% late in summer.", nx_giam: "📉 {chat} gets lighter toward late summer: darker than {p1}% of the map early on, only {p2}% late in summer.", nx_deu: "📊 The substances stay fairly steady all summer, no clear rise or fall.", nx_dinh: "🔥 Darkest moment: {ngay}, {chat} darker than {pv}% of the map.", nx_nhe: "🌿 {chat} here is milder than most cities (rank {hang}/{n}).", nx_khong_nhe: "🌿 No substance is clearly mild: all 4 are in the darker half of the 30 cities.", pt_tp_ss: "🏙️ Whole summer, compared with 30 cities (rank 1 = darkest):", pt_tp_lo: "Most worrying:", pt_tp_nhe: "Mildest:", pt_tp_hang: "rank {hang}/{n}",
-    pt_doc_tp: "<p>🗺️ <b>Darker</b> color = <b>more</b> of that substance. A city sits under only 1 color band at a time.</p><ul><li><b>%</b>: while that substance's band passes, how often the city is among the <b>darkest</b> spots on the map. E.g. <b>94%</b> = 94 times out of 100 it is very dark.</li><li><b>Rank</b>: its place for darkness among 30 cities. <b>Rank 1</b> = darkest.</li><li><b>🌱 Sprout's notes</b>: the standout substance, the clearest rise or fall between early and late summer, the darkest moment, and the mildest substance compared with other cities.</li></ul><p>💡 High % but low rank? Most cities are often dark, like a class where everyone scores high: you can still be 19th.</p><p>⚠️ This is color darkness, not a real measurement. Don't compare % between substances.</p>",
+    pt_doc_tp: "<p><b>Darker</b> color = <b>more</b> of that substance. A city sits under only 1 color band at a time.</p><ul><li><b>%</b>: while that substance's band passes, how often the city is among the <b>darkest</b> spots on the map. E.g. <b>94%</b> = 94 times out of 100 it is very dark.</li><li><b>Rank</b>: its place for darkness among 30 cities. <b>Rank 1</b> = darkest.</li></ul><p>💡 High % but low rank? Most cities are often dark, like a class where everyone scores high: you can still be 19th.</p><p>⚠️ This is color darkness, not a real measurement. Don't compare % between substances.</p>",
     pt_dam_nhat: "darkest: {noi}",
     pt_doc_tieu: "How to read the percentages", pt_doc_tieu_nut: "📖 How to read the analysis", jb_tab_tg: "🌍 Whole world", jb_tab_tp: "🏙️ One city", jb_tab_chat: "🎵 4 gases", jb_vung_aria: "Choose a continent", jb_tp_trai: "Show cities to the left", jb_tp_phai: "Show cities to the right",
     jb_tp_bam: "Press ▶ on the map to hear {tp} all summer. The 1× button changes the speed.",
@@ -1320,11 +1338,11 @@ const CHU = {
     cay_mua_nut: "Buy ({gia} ⭐)", cay_khong: "No", cay_bo_thu: "Take it off", cay_nhan_thu: "👀 Trying on",
     tt_thuong: "⭐ +1 star for listening to all of {ten}'s diary!",
     g5_ten: "Green Solutions", g5_tieu_de: "💡 Green Solutions", g5_mo_ta: "Pick solution cards to clean the air of a polluted city",
-    g5_goi_y: "Pick solution cards to clean the air. Tap one card to see its own effect; turn on several to see their combined effect.",
+    g5_luat_nut: "How to play", g5_luat: "<p>🏙️ The city is polluted. Clean up its air!</p><p>🪙 You have <b>10 coins</b>. Each solution card costs 1–4 coins.</p><p>🃏 Tap a card to turn it on and see how much pollution drops. Tap again to turn it off.</p><p>⭐ An average drop of <b>30%</b> earns 1 star, <b>42%</b> earns 2 stars, <b>50%</b> earns 3 stars.</p><p>➕ Combined cards don't simply add up: each one only reduces the pollution that is left. Ozon falls more slowly because it is not released directly.</p><p class=\"g5-luat-meo\">💡 Tip: cheap cards can be very strong. Mix different cards to lower all 4 substances.</p>", g5_goi_y: "Pick solution cards to clean the air. Tap one card to see its own effect; turn on several to see their combined effect.",
     g5_chon_tp: "Choose a city", g5_pho_aria: "City picture: smoke, traffic, a factory and the green solutions in use",
     g5_xu: "🪙 {con}/{tong} left",
     g5_chu_giai: "Light bar: at the start · dark bar: after solutions · marks: Low / Medium / High limits",
-    g5_tom_0: "Starting levels come from NASA's map for this city (compared with the whole world). Pick some solution cards!",
+    g5_tom_0: "👆 Pick some solution cards below!",
     g5_tom: "Combining <b>{so} solutions</b>: average pollution down <b>{pt}%</b>.",
     g5_het_xu: "Not enough 🪙 for this card (needs {xu}). Remove another card first!",
     g5_rieng: "Using only this solution:",
@@ -1343,7 +1361,7 @@ const CHU = {
       "Filters on chimneys catch dust and some toxic gases before they leave the factory.",
       "Wildfires release huge amounts of CO and smoke, which can travel thousands of km, as in North America in summer 2024."
     ],
-    g5_luu_y: "⚠️ Starting levels come from NASA's map in this app. <b>The reduction of each card is an illustrative number for learning</b>, not a NASA simulation result. Combined solutions don't simply add up, because each one only reduces the pollution that is left. Ozon falls more slowly because it isn't emitted directly.",
+    g5_luu_y: "⚠️ Starting levels come from NASA's map; <b>each card's reduction is an illustrative number</b> for learning.",
     g3_ten: "🌫️ Particle Dash", g3_ten_ngan: "Particle Dash", g3_mo_ta: "A dust particle falls through the atmosphere: dodge pollution to reach the ground",
     g3_doc_tinh: "☠️ Toxicity", g3_aria: "Game area: tap or drag left and right to dodge smoke; on a computer use the left and right arrow keys",
     g3_dk: "Tap or drag left and right (computer: move the mouse or press ← →) to dodge the smoke.",
@@ -1441,7 +1459,7 @@ const CHU = {
     nguon_noi_dung: "<p class=\"wc-nguon-mo-dau\">NASA's GEOS-CF model tracks four things in the air: <b>CO, fine particles PM2.5, NOx and Ozon</b>.</p><ul><li><b>Frames:</b> NASA Scientific Visualization Studio, <a href=\"https://svs.gsfc.nasa.gov/5533\" target=\"_blank\" rel=\"noopener\">“Air Quality Model Runs” (SVS 5533)</a>, <i>AirQuality_MapWithLabels</i> set, 5760×3240, 1,800 frames.</li><li><b>Model:</b> GEOS-CF (Goddard Earth Observing System Composition Forecasting), NASA GMAO.</li><li><b>Period:</b> 1 July – 14 September 2024, North American fire season. The app assumes 1 frame = 1 hour (1,800 frames ÷ 75 days); SVS does not state this.</li></ul>",
     doc: {
       "man-home": "Hi! I'm Sprout. Today we'll listen to Earth's sky using NASA's map. Press Sprout's story to hear our story, Summer Jukebox to listen to the map, or Games to play.",
-      "man-jb": "This is the Summer Jukebox. The map has four alternating color bands. Pick a city, then press play in the middle of the map to hear its air all summer; the button in the top-right corner changes the speed to slow, normal or fast. Open the 4 gases tab to meet each instrument: the low horn is CO, the marimba is fine particles, the pluck is NOx, and the bell is Ozon. Higher, denser notes mean darker color.",
+      "man-jb": "This is the Summer Jukebox. The map has four alternating color bands. Pick a city, then press play in the middle of the map to hear its air all summer; the button in the top-right corner changes the speed to slow, normal or fast. Open the 4 gases tab to meet each instrument: the cello is CO, the kalimba is fine particles, the pluck is NOx, and the bell is Ozon. Higher, denser notes mean darker color.",
       "man-tt": "Air Detective: each round the app picks one substance and one moment, then asks about 5 cities. Listen at the pin on the map: higher, denser notes mean darker color. Then guess Low, Medium or High. Press the samples if you are not sure. After the round, the diary shows the real answers.",
       "man-hoc": "The four guests in the air are CO, fine particles PM2.5, NOx and Ozon. Listen to learn each instrument.",
       "man-game": "The Listen and guess games are Air Detective and Sky Scales. The Action games are Particle Dash and Green Solutions. Stars you earn decorate your tree.",
@@ -1673,16 +1691,16 @@ function bao(ctx, dich, t, dinh, len, tat) { // gain có đường bao
 }
 // 4 nhạc cụ: f = tần số, to = 0..1
 const NHAC = [
-  function co(ctx, dich, t, f, to) { // kèn trầm: răng cưa qua lọc thấp
-    const g = bao(ctx, dich, t, 0.22 * to, 0.04, 0.55);
-    const loc = ctx.createBiquadFilter(); loc.type = "lowpass"; loc.frequency.value = 500 + 1500 * to; loc.connect(g);
-    [0, 7].forEach(function (lech) { const o = ctx.createOscillator(); o.type = "sawtooth"; o.frequency.value = f; o.detune.value = lech; o.connect(loc); o.start(t); o.stop(t + 0.6); });
+  function co(ctx, dich, t, f, to) { // cello kéo: răng cưa qua lọc thấp, vào chậm, rung nhẹ (vibrato), trầm ấm
+    const g = bao(ctx, dich, t, 0.24 * to, 0.09, 0.65);
+    const loc = ctx.createBiquadFilter(); loc.type = "lowpass"; loc.frequency.value = 900 + 900 * to; loc.connect(g);
+    const o = ctx.createOscillator(); o.type = "sawtooth"; o.frequency.value = f; o.connect(loc);
+    const rung = ctx.createOscillator(), doRung = ctx.createGain(); rung.frequency.value = 5.5; doRung.gain.value = 3; rung.connect(doRung); doRung.connect(o.frequency);
+    o.start(t); o.stop(t + 0.7); rung.start(t); rung.stop(t + 0.7);
   },
-  function pm(ctx, dich, t, f, to) { // mộc cầm (marimba): gõ gỗ ấm, tắt nhanh
-    [[1, 1], [4, 0.18], [10, 0.05]].forEach(function (p) {
-      const g = bao(ctx, dich, t, 0.28 * to * p[1], 0.003, 0.5 / Math.sqrt(p[0]));
-      const o = ctx.createOscillator(); o.type = "sine"; o.frequency.value = f * p[0]; o.connect(g); o.start(t); o.stop(t + 0.6);
-    });
+  function pm(ctx, dich, t, f, to) { // kalimba: sin trong + âm bồi gõ ngắn, tắt dần, nghe rõ cao thấp
+    const o = ctx.createOscillator(); o.type = "sine"; o.frequency.value = f * 2; o.connect(bao(ctx, dich, t, 0.24 * to, 0.002, 0.75)); o.start(t); o.stop(t + 0.8);
+    const b = ctx.createOscillator(); b.type = "sine"; b.frequency.value = f * 2 * 5.4; b.connect(bao(ctx, dich, t, 0.05 * to, 0.001, 0.08)); b.start(t); b.stop(t + 0.15);
   },
   function nox(ctx, dich, t, f, to) { // gảy điện tử: sóng vuông tắt nhanh
     const g = bao(ctx, dich, t, 0.12 * to, 0.004, 0.22);
@@ -1697,7 +1715,7 @@ const NHAC = [
   }
 ];
 const NGU_CUNG = [261.63, 293.66, 329.63, 392.0, 440.0, 523.25, 587.33, 659.25, 783.99, 880.0];
-const QUANG = [0.5, 1, 1, 2]; // CO trầm, O3 cao
+const QUANG = [0.5, 1, 1, 2]; // CO (cello) trầm, O3 cao
 function tanSo(d, v, lech) { return NGU_CUNG[Math.min(9, Math.round(v * 6) + (lech || 0))] * QUANG[d]; }
 function batDauPhat() {
   dungAm();
@@ -1789,7 +1807,8 @@ const jbCanvas = $("jb-anh"), jbG = jbCanvas.getContext("2d");
 function veJb() {
   const k = KHUNG[jbK]; if (!k) return;
   layAnh(k, function (a) { if (KHUNG[jbK] === k) jbG.drawImage(a, 0, 0, 1152, 648); });
-  $("jb-thanh").setAttribute("aria-valuetext", ngayKhung(k.so)); // thanh thời gian nằm trong khung NASA, không còn dòng "Khung … · ngày"
+  $("jb-thanh").setAttribute("aria-valuetext", ngayKhung(k.so));
+  $("jb-ngay-nhan").textContent = "📅 " + ngayKhung(k.so).slice(0, 5); // chỉ ngày/tháng, ví dụ 15/08 // thanh thời gian nằm trong khung NASA, không còn dòng "Khung … · ngày"
   jbCanvas.setAttribute("aria-label", T("aria_anh", { so: k.so }));
   if (tam) datTam(tam.xGoc, tam.yGoc, false);
 }
@@ -3068,7 +3087,7 @@ let wcTrang = 0;
   }
 })();
 const MAU_CHIP = ["var(--co)", "var(--pm)", "var(--nox)", "var(--o3)"];
-// Viết hoa chữ cái đầu tiên (bỏ qua emoji ở đầu), vd "🎺 kèn trầm" → "🎺 Kèn trầm"
+// Viết hoa chữ cái đầu tiên (bỏ qua emoji ở đầu), vd "🎻 cello kéo" → "🎻 Cello kéo"
 function hoaChuDau(t) { return t.replace(/\p{L}/u, function (c) { return c.toUpperCase(); }); }
 function veWelcome() {
   $("wc-doi-tieng").textContent = ngonNgu === "vi" ? "EN" : "VI";
