@@ -1607,15 +1607,26 @@ function bong(cx, cy, r, mau, mat) {
                 '<path d="M' + (cx - r * 0.25) + ' ' + (cy + r * 0.38) + ' Q' + cx + ' ' + (cy + r * 0.6) + ' ' + (cx + r * 0.25) + ' ' + (cy + r * 0.38) + '" stroke="#1d1d1d" stroke-width="' + (r * 0.1) + '" fill="none" stroke-linecap="round"/>';
   return s;
 }
+function hat(cx, cy, r, c) { // viên tròn phẳng + đốm sáng nhỏ
+  return '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="' + c + '"/><circle cx="' + (cx - r * 0.35) + '" cy="' + (cy - r * 0.35) + '" r="' + (r * 0.3) + '" fill="#fff" fill-opacity=".35"/>';
+}
 const ICON_CHAT = [
-  // CO: 1 cacbon (xám đậm) + 1 oxy (đỏ), có làn khói nhỏ
-  '<path d="M9 9 q-2 -3 1 -5 q3 -2 1 -4" stroke="#9aa0a6" stroke-width="1.6" fill="none" stroke-linecap="round"/>' + bong(11.5, 18, 7.5, "#4a4a4a", false) + bong(21.5, 17, 7.5, "#e4170f", true),
-  // PM2.5: đám hạt bụi nhiều cỡ
-  bong(16, 17, 7.5, "#b8640f", true) + bong(6, 10, 3, "#d9894a") + bong(26.5, 9, 3.5, "#8a4b0f") + bong(5.5, 24, 2.5, "#8a4b0f") + bong(27, 25, 2.6, "#d9894a") + bong(16, 4.5, 2, "#d9894a"),
-  // NOx (NO2): nitơ ở giữa (xanh đậm) + 2 oxy hai bên (xanh nhạt)
-  bong(6.5, 21, 5.5, "#6fd170") + bong(25.5, 21, 5.5, "#6fd170") + bong(16, 14, 8, "#19961a", true),
-  // O3: 3 oxy xếp hình chữ V (tím)
-  bong(6.5, 20, 5.5, "#8b74ef") + bong(25.5, 20, 5.5, "#8b74ef") + bong(16, 12, 7.5, "#5a3fd0", true)
+  // CO: ngọn lửa đỏ cam trên đế, có 2 làn khói hồng
+  '<circle cx="24" cy="6" r="2.2" fill="#f4a6a0"/><circle cx="27.6" cy="3.2" r="1.5" fill="#f8c3be"/>' +
+  '<path d="M16 3C18 8 24 11 23 19C22.5 24 19.5 26 16 26C12.5 26 9.5 24 9 19.5C8.6 15 11 13 12.5 10C13 13 14 14 15 14.5C14.5 10 15 6 16 3Z" fill="#e8401c"/>' +
+  '<path d="M16 13C17.5 16 20 18 19.5 21.5C19 24 17.5 25 16 25C14.3 25 12.8 24 12.6 21.8C12.4 19.5 14 18.5 14.8 16.5C15.3 17.5 15.6 18 16 18.3C15.8 16.5 15.8 14.5 16 13Z" fill="#f9a11b"/>' +
+  '<rect x="8" y="27.5" width="16" height="2.2" rx="1.1" fill="#b3261e"/>',
+  // PM2.5: chùm hạt bụi nâu nhiều cỡ
+  hat(12, 9, 4.5, "#c8722a") + hat(21.5, 7.5, 3.2, "#a85a1c") + hat(8.5, 19.5, 4, "#b8661f") + hat(19, 18.5, 5.5, "#c8722a") + hat(27, 14, 2.6, "#d98a45") + hat(13.5, 27.5, 2.6, "#a85a1c") + hat(26, 25.5, 3, "#b8661f"),
+  // NOx: đám mây khí xanh lá
+  '<g fill="#2f9e44"><circle cx="10.5" cy="19" r="6.5"/><circle cx="17.5" cy="13" r="8"/><circle cx="24.5" cy="19.5" r="6"/><circle cx="16.5" cy="21.5" r="6.5"/></g>' +
+  '<circle cx="14.5" cy="9.5" r="2.6" fill="#6fd17f"/><circle cx="8" cy="16" r="1.7" fill="#6fd17f"/>',
+  // O3: mặt trời tím chiếu tia + 2 làn sóng không khí
+  '<g stroke="#7b61ff" stroke-width="1.7" stroke-linecap="round">' +
+  [180, 225, 270, 315, 0].map(function (g) { const r = g * Math.PI / 180, c = Math.cos(r), sn = Math.sin(r);
+    return '<line x1="' + (16 + 8.6 * c).toFixed(1) + '" y1="' + (13 + 8.6 * sn).toFixed(1) + '" x2="' + (16 + 11.4 * c).toFixed(1) + '" y2="' + (13 + 11.4 * sn).toFixed(1) + '"/>'; }).join("") +
+  '<path d="M5 23.5q2.75-2.2 5.5 0t5.5 0t5.5 0t5.5 0M5 28.5q2.75-2.2 5.5 0t5.5 0t5.5 0t5.5 0" fill="none"/></g>' +
+  '<circle cx="16" cy="13" r="6.5" fill="#7b61ff"/><circle cx="13.8" cy="10.8" r="2" fill="#fff" fill-opacity=".4"/>'
 ];
 function iconChat(d, cls) { return '<svg class="icon-chat ' + (cls || "") + '" viewBox="0 0 32 32" aria-hidden="true">' + ICON_CHAT[d] + "</svg>"; }
 // Thẻ game "Hành trình hạt bụi": dùng icon hạt bụi PM2.5 thay emoji 🌫️
