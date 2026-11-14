@@ -452,9 +452,22 @@
   .tt-nk { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
   .tt-nk[hidden] { display: none; }
   /* ===== Game 3: Hành trình hạt bụi ===== */
-  .g3-thanh { display: flex; align-items: center; gap: 8px; width: 100%; font-size: .85rem; font-weight: 800; color: #7a4b00; }
-  .g3-doc-nen { flex: 1; height: 12px; border-radius: 6px; background: #fff; border: 2px solid #f4a261; overflow: hidden; }
-  .g3-doc-nen i { display: block; height: 100%; width: 0; background: #52b788; transition: width .2s, background .2s; }
+  .g3-hud { width: 100%; display: flex; flex-direction: column; gap: 6px; background: #fff; border-radius: 16px; padding: 8px 10px; box-shadow: 0 2px 0 rgba(0,0,0,.05); }
+  .g3-hud-hang { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+  .g3-chip { border-radius: 999px; padding: 3px 10px; font-size: .8rem; font-weight: 800; white-space: nowrap; }
+  .g3-chip-tang { background: #e6f1fb; color: #1d4e89; }
+  .g3-chip-an { background: #e6f6ea; color: var(--vien); }
+  .g3-doc-o { display: flex; align-items: center; gap: 6px; }
+  .g3-doc-mat { font-size: 1.15rem; line-height: 1; }
+  .g3-doc-nhan { font-size: .78rem; font-weight: 800; color: #7a4b00; white-space: nowrap; }
+  .g3-doc-nen { position: relative; flex: 1; height: 12px; border-radius: 6px; overflow: hidden;
+    background: linear-gradient(90deg, rgba(82,183,136,.18), rgba(244,162,97,.18), rgba(230,57,70,.18)); }
+  .g3-doc-nen i { display: block; height: 100%; width: 0; border-radius: 6px; background: linear-gradient(90deg, #52b788, #f4a261 50%, #e63946); background-size: 100% 100%; transition: width .2s; }
+  .g3-doc-nen b { position: absolute; top: 2px; bottom: 2px; width: 2px; border-radius: 1px; background: rgba(255,255,255,.85); } .g3-doc-nen .m1 { left: 33%; } .g3-doc-nen .m2 { left: 66%; }
+  .g3-doc-so { min-width: 38px; text-align: right; font-size: .82rem; font-weight: 800; color: #7a4b00; font-variant-numeric: tabular-nums; }
+  .g3-doc-o.nguy .g3-doc-so { color: #c1121f; } .g3-doc-o.nguy .g3-doc-mat { animation: g3Run .4s ease-in-out infinite; }
+  @keyframes g3Run { 50% { transform: translateX(2px) rotate(6deg); } }
+  @media (prefers-reduced-motion: reduce) { .g3-doc-o.nguy .g3-doc-mat { animation: none; } }
   .g3-vung { position: relative; width: 100%; max-width: 340px; aspect-ratio: 340 / 440; border-radius: 16px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,.2); touch-action: none; user-select: none; cursor: pointer; }
   .g3-vung canvas { width: 100%; height: 100%; display: block; }
   .g3-bang { position: absolute; inset: 14px; margin: auto; height: max-content; background: rgba(255,255,255,.96); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px; align-items: center; text-align: center; box-shadow: 0 6px 20px rgba(0,0,0,.25); cursor: default; }
@@ -463,6 +476,7 @@
   .g3-nut-tron { width: 64px; height: 64px; border-radius: 50%; border: 3px solid #fff; background: rgba(30,107,47,.92); color: #fff; font-size: 1.6rem; cursor: pointer;
     box-shadow: 0 4px 14px rgba(0,0,0,.4); display: flex; align-items: center; justify-content: center; padding-left: 4px; }
   .g3-nut-tron:hover { background: var(--mau-nut); } .g3-nut-tron:focus-visible { outline: 3px solid #ffd76a; }
+  .g3-luat p { margin: 0; } .g3-luat-dk { margin-top: 6px !important; padding-top: 6px; border-top: 1px dashed #d8f3dc; color: #52796f; }
   .g3-luat { margin: 0; font-size: .88rem; line-height: 1.45; text-align: left; background: #fff; border-radius: 12px; padding: 10px 12px; box-shadow: 0 2px 0 rgba(0,0,0,.05); }
   .g3-bang p { margin: 0; font-size: .92rem; line-height: 1.45; }
   .g3-bang .g3-bang-tieu { font-weight: 800; font-size: 1.05rem; color: var(--vien); }
@@ -941,14 +955,27 @@
   <!-- GAME 3: HÀNH TRÌNH HẠT BỤI -->
   <section class="man" id="man-g3">
     <h2 data-i18n="g3_ten">🌫️ Hành trình hạt bụi</h2>
-    <div class="g3-thanh"><span data-i18n="g3_doc_tinh">☠️ Độc tính</span><div class="g3-doc-nen"><i id="g3-doc"></i></div></div>
-    <p class="phu" id="g3-tang"></p>
+    <!-- Bảng trạng thái: tầng khí quyển + số vật phẩm nhặt được; thanh độc tính chuyển màu xanh → vàng → đỏ, mặt hạt bụi đổi theo -->
+    <div class="g3-hud">
+      <div class="g3-hud-hang">
+        <span class="g3-chip g3-chip-tang" id="g3-tang"></span>
+        <span class="g3-chip g3-chip-an" id="g3-an"></span>
+      </div>
+      <div class="g3-doc-o" id="g3-doc-o">
+        <span class="g3-doc-mat" id="g3-doc-mat" aria-hidden="true">😊</span>
+        <span class="g3-doc-nhan" data-i18n="g3_doc_tinh">☠️ Độc tính</span>
+        <div class="g3-doc-nen"><i id="g3-doc"></i><b class="m1"></b><b class="m2"></b></div>
+        <span class="g3-doc-so" id="g3-doc-so">0%</span>
+      </div>
+    </div>
     <div class="g3-vung" id="g3-vung" role="application" data-i18n-aria="g3_aria" aria-label="Khung chơi: chạm hoặc kéo sang trái, phải để hạt bụi né khói">
       <canvas id="g3-cv"></canvas>
       <div class="g3-bang" id="g3-bang" hidden></div>
     </div>
-    <p class="g3-luat" data-i18n="g3_luat"></p>
-    <p class="phu" data-i18n="g3_dk">Chạm hoặc kéo ngón tay sang trái, phải (máy tính: rê chuột hoặc phím ← →) để hạt bụi né khói.</p>
+    <div class="g3-luat">
+      <p data-i18n="g3_luat"></p>
+      <p class="g3-luat-dk" data-i18n="g3_dk">Chạm hoặc kéo ngón tay sang trái, phải (máy tính: rê chuột hoặc phím ← →) để hạt bụi né khói.</p>
+    </div>
   </section>
 
   <!-- GAME 4: BẢO VỆ TRÁI ĐẤT -->
@@ -2609,9 +2636,14 @@ function g3Ve() {
   g.strokeStyle = "rgba(0,0,0,.45)"; g.lineWidth = 3;
   const km = (20 * (1 - pt)).toFixed(1).replace(".", ngonNgu === "en" ? "." : ",") + " km";
   g.strokeText(km, x0 - 4, ym); g.fillText(km, x0 - 4, ym);
-  $("g3-doc").style.width = s.doc + "%";
-  $("g3-doc").style.background = s.doc > 66 ? "#e63946" : s.doc > 33 ? "#f4a261" : "#52b788";
-  $("g3-tang").textContent = T("g3_tang")[tang] + " · " + T("g3_an", { so: s.an });
+  const doc = Math.max(0, Math.min(100, Math.round(s.doc)));
+  $("g3-doc").style.width = doc + "%";
+  $("g3-doc").style.backgroundSize = (doc > 0 ? 10000 / doc : 100) + "% 100%"; // dải màu cố định theo cả thanh, phần đầy chỉ lộ đoạn tương ứng
+  $("g3-doc-so").textContent = doc + "%";
+  $("g3-doc-mat").textContent = doc > 66 ? "🤢" : doc > 33 ? "😟" : "😊";
+  $("g3-doc-o").classList.toggle("nguy", doc > 66);
+  $("g3-tang").textContent = T("g3_tang")[tang];
+  $("g3-an").textContent = "🎒 " + s.an; $("g3-an").title = T("g3_an", { so: s.an }); $("g3-an").setAttribute("aria-label", T("g3_an", { so: s.an }));
 }
 function g3BuocMoi() {
   const s = g3, H = G3.H;
