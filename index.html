@@ -361,6 +361,7 @@
   .icon-chat { width: 20px; height: 20px; flex-shrink: 0; vertical-align: -5px; }
   .icon-chat.vua { width: 30px; height: 30px; }
   .icon-chat.lon { width: 40px; height: 40px; }
+  .gm-icon-bui { display: flex; justify-content: center; line-height: 1; } .gm-icon-bui .icon-chat.lon { width: 34px; height: 34px; }
   .chip { --m: #888; background: #fff; color: var(--m); border: 2px solid var(--m); padding: 2px 10px 2px 4px; gap: 3px; }
   .c-co { --m: var(--co); } .c-pm { --m: var(--pm); } .c-nox { --m: var(--nox); } .c-o3 { --m: var(--o3); }
   .chip.sang { background: color-mix(in srgb, var(--m) 16%, #fff); box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--m); }
@@ -400,6 +401,7 @@
   .o-cay { border-color: #95d5b2; background: linear-gradient(135deg, #fff, #eafbea); }
   .cay-dau { display: flex; align-items: center; justify-content: center; gap: 10px; }
   .cay-sao { background: #fff3c4; color: #7a4b00; border: 2px solid #ffd166; border-radius: 999px; padding: 4px 12px; font-weight: 800; }
+  #g5-xu { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; flex-shrink: 0; } /* chữ "Còn x/10" căn giữa theo chiều cao ô chọn thành phố */
   .cay-khung { width: 100%; max-width: 280px; background: radial-gradient(circle at 50% 45%, #ffffff 0%, rgba(255,255,255,.4) 60%, transparent 72%); border-radius: 50%; }
   #cay-xem { width: 100%; height: auto; display: block; overflow: visible; }
   #cay-xem.vui { animation: cay-vui .6s ease; }
@@ -642,6 +644,16 @@
     cursor: pointer; box-shadow: 0 3px 0 #95d5b2; margin-bottom: 4px; }
   .tt-ten { margin: 2px 0 0; font-size: 1.25rem; color: var(--vien); }
   .tt-ten:empty { display: none; }
+  /* Dòng tiến độ: nhãn ván · 5 chấm · sao */
+  .td-dong { display: inline-flex; align-items: center; gap: 10px; background: #fff; border-radius: 999px; padding: 4px 6px; box-shadow: 0 2px 0 rgba(0,0,0,.05); }
+  .td-van { background: #e6f6ea; color: var(--vien); border-radius: 999px; padding: 2px 10px; font-weight: 800; font-size: .8rem; }
+  .td-sao { background: #fff3c4; color: #7a4b00; border-radius: 999px; padding: 2px 10px; font-weight: 800; font-size: .8rem; }
+  .td-cham { display: inline-flex; gap: 6px; align-items: center; }
+  .td-c { width: 11px; height: 11px; border-radius: 50%; background: #e9ecef; transition: background .25s, transform .25s; }
+  .td-c.dung { background: #2a9d3f; } .td-c.sai { background: #d62828; }
+  .td-c.dang { width: 15px; height: 15px; background: #fff; box-shadow: inset 0 0 0 3px var(--mau-nut); animation: tdNhip 1.4s ease-in-out infinite; }
+  @keyframes tdNhip { 50% { transform: scale(1.15); } }
+  @media (prefers-reduced-motion: reduce) { .td-c.dang { animation: none; } }
   .tt-de { margin: 0; }
   .tt-bd { width: 100%; border-radius: 14px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,.15); }
   .tt-bd canvas { display: block; width: 100%; height: auto; }
@@ -907,7 +919,7 @@
     <!-- "Nghe đoán chất" (g1) đã bỏ khỏi danh sách: quá đơn giản; tab 4 chất khí trong Hộp nhạc dạy nhạc cụ của từng chất -->
     <h3 class="gm-nhom" data-i18n="gm_nhom_hanh_dong">🕹️ Hành động & chiến lược</h3>
     <div class="luoi gm-luoi">
-      <button class="o-chon gm-o" id="g3-mo" type="button"><span class="lon">🌫️</span><span class="ten" data-i18n="g3_ten_ngan"></span><span class="gm-sao" data-sao="3"></span></button>
+      <button class="o-chon gm-o" id="g3-mo" type="button"><span class="lon gm-icon-bui"></span><span class="ten" data-i18n="g3_ten_ngan"></span><span class="gm-sao" data-sao="3"></span></button>
       <button class="o-chon gm-o" id="g5-mo" type="button"><span class="lon">💡</span><span class="ten" data-i18n="g5_ten"></span><span class="gm-sao" data-sao="3"></span></button>
     </div>
   </section>
@@ -1186,7 +1198,7 @@ const CHU = {
     jb_diem: "📍 {noi}<br>{toa}<br>Dải đang thấy: <b>{chat}</b> · {nhac}<br>Mức màu: <span class=\"muc muc-{lop}\">{muc}</span> {so}",
     jb_diem_bien: "Điểm này nằm sát mép dải màu hoặc dưới nhãn chữ, không đọc được. Chạm chỗ khác nhé!",
     gan: "Gần {ten}", khong_gan: "Không có thành phố gần", aria_anh: "Bản đồ NASA khung {so}: 4 dải màu CO, PM2.5, NOx, O₃ xếp xen kẽ",
-    tt2_luot: "Ván {van} · Câu {so}/{tong} · ⭐ {sao}", tt2_luot_xong: "Ván {van} xong · ⭐ {sao}/{tong}", tt2_de: "Chất {chat} · {ngay}. Nghe âm thanh ở 📍 rồi đoán mức màu.", tt2_de_xong: "Chất {chat} · {ngay}", tt2_nghe: "🔊 Nghe lại", tt2_mau: "Nghe mẫu:", tt2_mau_thap: "Thấp", tt2_mau_vua: "Vừa", tt2_mau_cao: "Cao", tt2_kq: "Mức thật ở {tp}: <span class=\"muc muc-{lop}\">{muc}</span>", tt2_xem_nk: "📒 Xem nhật ký ➜", tt2_nk_tieu: "📒 Nhật ký thám tử · ván {van}", tt2_nk_tp: "Thành phố", tt2_nk_that: "Thật", tt2_nk_em: "Em đoán", tt2_nk_sao: "⭐ +{sao} sao (đúng {sao}/{tong} câu) đã cộng vào Cây của em.", tt2_van_moi: "🔄 Ván mới", tt2_bd_aria: "Bản đồ NASA, ghim là thành phố đang hỏi", tt_tieu_de: "🔎 Thám tử không khí", tt_ngau: "🎲 Ngẫu nhiên", tt_chon_tp: "Chọn thành phố", tt_goi_y: "Chọn một thành phố, đoán 5 câu về không khí ở đó, rồi xem nhật ký từng ngày.",
+    td_van: "Ván {so}", tt2_luot: "Ván {van} · Câu {so}/{tong} · ⭐ {sao}", tt2_luot_xong: "Ván {van} xong · ⭐ {sao}/{tong}", tt2_de: "Chất {chat} · {ngay}. Nghe âm thanh ở 📍 rồi đoán mức màu.", tt2_de_xong: "Chất {chat} · {ngay}", tt2_nghe: "🔊 Nghe lại", tt2_mau: "Nghe mẫu:", tt2_mau_thap: "Thấp", tt2_mau_vua: "Vừa", tt2_mau_cao: "Cao", tt2_kq: "Mức thật ở {tp}: <span class=\"muc muc-{lop}\">{muc}</span>", tt2_xem_nk: "📒 Xem nhật ký ➜", tt2_nk_tieu: "📒 Nhật ký thám tử · ván {van}", tt2_nk_tp: "Thành phố", tt2_nk_that: "Thật", tt2_nk_em: "Em đoán", tt2_nk_sao: "⭐ +{sao} sao (đúng {sao}/{tong} câu) đã cộng vào Cây của em.", tt2_van_moi: "🔄 Ván mới", tt2_bd_aria: "Bản đồ NASA, ghim là thành phố đang hỏi", tt_tieu_de: "🔎 Thám tử không khí", tt_ngau: "🎲 Ngẫu nhiên", tt_chon_tp: "Chọn thành phố", tt_goi_y: "Chọn một thành phố, đoán 5 câu về không khí ở đó, rồi xem nhật ký từng ngày.",
     tt_phat: "▶ Nghe nhật ký", tt_dung: "■ Dừng",
     tt_khong_co: "Chưa đọc được số nào ở thành phố này.",
     tt_tom_tat_dong: "<b>{chat}</b>: thấy trong {lan} ngày, trung bình <span class=\"muc muc-{lop}\">{muc}</span>, đậm nhất ngày {ngay}",
@@ -1372,7 +1384,7 @@ const CHU = {
     jb_diem: "📍 {noi}<br>{toa}<br>Band here: <b>{chat}</b> · {nhac}<br>Color level: <span class=\"muc muc-{lop}\">{muc}</span> {so}",
     jb_diem_bien: "This spot is on a band edge or under a label and can't be read. Try another spot!",
     gan: "Near {ten}", khong_gan: "No city nearby", aria_anh: "NASA map frame {so}: 4 alternating color bands CO, PM2.5, NOx, O₃",
-    tt2_luot: "Round {van} · Question {so}/{tong} · ⭐ {sao}", tt2_luot_xong: "Round {van} done · ⭐ {sao}/{tong}", tt2_de: "Substance {chat} · {ngay}. Listen at the 📍 and guess the color level.", tt2_de_xong: "Substance {chat} · {ngay}", tt2_nghe: "🔊 Listen again", tt2_mau: "Samples:", tt2_mau_thap: "Low", tt2_mau_vua: "Medium", tt2_mau_cao: "High", tt2_kq: "Real level in {tp}: <span class=\"muc muc-{lop}\">{muc}</span>", tt2_xem_nk: "📒 See the diary ➜", tt2_nk_tieu: "📒 Detective diary · round {van}", tt2_nk_tp: "City", tt2_nk_that: "Real", tt2_nk_em: "You", tt2_nk_sao: "⭐ +{sao} stars ({sao}/{tong} correct) added to My tree.", tt2_van_moi: "🔄 New round", tt2_bd_aria: "NASA map, the pin is the city being asked", tt_tieu_de: "🔎 Air Detective", tt_ngau: "🎲 Random", tt_chon_tp: "Choose a city", tt_goi_y: "Pick a city, answer 5 guessing questions about its air, then see its day-by-day diary.",
+    td_van: "Round {so}", tt2_luot: "Round {van} · Question {so}/{tong} · ⭐ {sao}", tt2_luot_xong: "Round {van} done · ⭐ {sao}/{tong}", tt2_de: "Substance {chat} · {ngay}. Listen at the 📍 and guess the color level.", tt2_de_xong: "Substance {chat} · {ngay}", tt2_nghe: "🔊 Listen again", tt2_mau: "Samples:", tt2_mau_thap: "Low", tt2_mau_vua: "Medium", tt2_mau_cao: "High", tt2_kq: "Real level in {tp}: <span class=\"muc muc-{lop}\">{muc}</span>", tt2_xem_nk: "📒 See the diary ➜", tt2_nk_tieu: "📒 Detective diary · round {van}", tt2_nk_tp: "City", tt2_nk_that: "Real", tt2_nk_em: "You", tt2_nk_sao: "⭐ +{sao} stars ({sao}/{tong} correct) added to My tree.", tt2_van_moi: "🔄 New round", tt2_bd_aria: "NASA map, the pin is the city being asked", tt_tieu_de: "🔎 Air Detective", tt_ngau: "🎲 Random", tt_chon_tp: "Choose a city", tt_goi_y: "Pick a city, answer 5 guessing questions about its air, then see its day-by-day diary.",
     tt_phat: "▶ Play the diary", tt_dung: "■ Stop",
     tt_khong_co: "No readings for this city yet.",
     tt_tom_tat_dong: "<b>{chat}</b>: seen on {lan} days, average <span class=\"muc muc-{lop}\">{muc}</span>, darkest on {ngay}",
@@ -1561,6 +1573,8 @@ const ICON_CHAT = [
   bong(6.5, 20, 5.5, "#8b74ef") + bong(25.5, 20, 5.5, "#8b74ef") + bong(16, 12, 7.5, "#5a3fd0", true)
 ];
 function iconChat(d, cls) { return '<svg class="icon-chat ' + (cls || "") + '" viewBox="0 0 32 32" aria-hidden="true">' + ICON_CHAT[d] + "</svg>"; }
+// Thẻ game "Hành trình hạt bụi": dùng icon hạt bụi PM2.5 thay emoji 🌫️
+document.querySelectorAll(".gm-icon-bui").forEach(function (o) { o.innerHTML = iconChat(1, "lon"); });
 
 // Home: 4 icon chất khí đứng ở 4 góc quanh Trái Đất, bồng bềnh nhẹ; chỉ vệ tinh bay vòng
 (function () {
@@ -2197,7 +2211,7 @@ function batDauTT() {
 function cauTT() {
   const e = tt.ds[tt.cau];
   $("tt-kq").innerHTML = ""; $("tt-tiep").hidden = true;
-  $("tt-luot").textContent = T("tt2_luot", { van: tt.van, so: tt.cau + 1, tong: TT_SO_CAU, sao: tt.sao });
+  veTienDo($("tt-luot"), tt.van, TT_SO_CAU, tt.cau, tt.tra.map(function (x) { return x ? x.dung : undefined; }), tt.sao, T("tt2_luot", { van: tt.van, so: tt.cau + 1, tong: TT_SO_CAU, sao: tt.sao }));
   $("tt-de").innerHTML = T("tt2_de", { chat: '<b style="color:' + MAU[tt.d] + '">' + T("ten_chat")[tt.d] + "</b>", ngay: ngayKhung(tt.k.so) });
   $("tt-ten").textContent = "📍 " + e.tp.co + " " + tenTP(e.tp);
   const l = $("tt-chon3"); l.innerHTML = "";
@@ -2232,7 +2246,7 @@ function chonTT(lop, nut) {
   document.querySelectorAll("#tt-chon3 .tt-o").forEach(function (b) { b.disabled = true; if (b.dataset.lop === that) b.classList.add("dung"); });
   if (!dung) nut.classList.add("sai");
   $("tt-kq").innerHTML = T(dung ? "dung" : "sai") + " " + T("tt2_kq", { tp: e.tp.co + " " + tenTP(e.tp), lop: that, muc: T("muc")[that] });
-  $("tt-luot").textContent = T("tt2_luot", { van: tt.van, so: tt.cau + 1, tong: TT_SO_CAU, sao: tt.sao });
+  veTienDo($("tt-luot"), tt.van, TT_SO_CAU, tt.cau, tt.tra.map(function (x) { return x ? x.dung : undefined; }), tt.sao, T("tt2_luot", { van: tt.van, so: tt.cau + 1, tong: TT_SO_CAU, sao: tt.sao }));
   $("tt-tiep").textContent = tt.cau + 1 >= TT_SO_CAU ? T("tt2_xem_nk") : T("tiep");
   $("tt-tiep").hidden = false;
 }
@@ -2245,7 +2259,7 @@ function ketThucTT() {
   congSao(tt.sao);
   veBanDoTT();
   $("tt-choi").hidden = true; $("tt-nk").hidden = false;
-  $("tt-luot").textContent = T("tt2_luot_xong", { van: tt.van, sao: tt.sao, tong: TT_SO_CAU });
+  veTienDo($("tt-luot"), tt.van, TT_SO_CAU, -1, tt.tra.map(function (x) { return x ? x.dung : undefined; }), tt.sao, T("tt2_luot_xong", { van: tt.van, sao: tt.sao, tong: TT_SO_CAU }));
   $("tt-de").innerHTML = T("tt2_de_xong", { chat: '<b style="color:' + MAU[tt.d] + '">' + T("ten_chat")[tt.d] + "</b>", ngay: ngayKhung(tt.k.so) });
   $("tt-ten").textContent = "";
   veNhatKyTT();
@@ -2274,9 +2288,9 @@ document.querySelectorAll("#tt-mau button").forEach(function (b) {
 });
 function veLaiTT() { // đổi ngôn ngữ
   if (!tt) return;
-  if (!$("tt-nk").hidden) { $("tt-luot").textContent = T("tt2_luot_xong", { van: tt.van, sao: tt.sao, tong: TT_SO_CAU }); $("tt-de").innerHTML = T("tt2_de_xong", { chat: '<b style="color:' + MAU[tt.d] + '">' + T("ten_chat")[tt.d] + "</b>", ngay: ngayKhung(tt.k.so) }); veNhatKyTT(); return; }
+  if (!$("tt-nk").hidden) { veTienDo($("tt-luot"), tt.van, TT_SO_CAU, -1, tt.tra.map(function (x) { return x ? x.dung : undefined; }), tt.sao, T("tt2_luot_xong", { van: tt.van, sao: tt.sao, tong: TT_SO_CAU })); $("tt-de").innerHTML = T("tt2_de_xong", { chat: '<b style="color:' + MAU[tt.d] + '">' + T("ten_chat")[tt.d] + "</b>", ngay: ngayKhung(tt.k.so) }); veNhatKyTT(); return; }
   const daTra = tt.tra[tt.cau];
-  $("tt-luot").textContent = T("tt2_luot", { van: tt.van, so: tt.cau + 1, tong: TT_SO_CAU, sao: tt.sao });
+  veTienDo($("tt-luot"), tt.van, TT_SO_CAU, tt.cau, tt.tra.map(function (x) { return x ? x.dung : undefined; }), tt.sao, T("tt2_luot", { van: tt.van, so: tt.cau + 1, tong: TT_SO_CAU, sao: tt.sao }));
   $("tt-de").innerHTML = T("tt2_de", { chat: '<b style="color:' + MAU[tt.d] + '">' + T("ten_chat")[tt.d] + "</b>", ngay: ngayKhung(tt.k.so) });
   $("tt-ten").textContent = "📍 " + tt.ds[tt.cau].tp.co + " " + tenTP(tt.ds[tt.cau].tp);
   document.querySelectorAll("#tt-chon3 .tt-o").forEach(function (b) { b.querySelector(".ten").textContent = T("muc")[b.dataset.lop]; });
@@ -2369,7 +2383,19 @@ function thuTuChat(n) {
   return t;
 }
 function moiG1() { return { luot: 0, sao: 0, thuTu: thuTuChat(G1_LUOT) }; }
-function moiG2() { return { luot: 0, sao: 0, thuTu: thuTuChat(G_LUOT) }; } // Cân bầu trời: 5 lượt, mỗi chất ít nhất 1 lượt
+// Dòng tiến độ dùng chung (Thám tử, Cân bầu trời): [Ván n] ● ● ◯ ○ ○ [⭐ x]
+// kq[i]: true = đúng (xanh), false = sai (đỏ), undefined = chưa trả lời; dang = chỉ số câu đang hỏi (-1 khi xong ván)
+function veTienDo(el, van, tong, dang, kq, sao, chuDoc) {
+  let cham = "";
+  for (let i = 0; i < tong; i++) {
+    const lop = kq[i] === true ? "dung" : kq[i] === false ? "sai" : i === dang ? "dang" : "cho";
+    cham += '<i class="td-c ' + lop + '"></i>';
+  }
+  el.innerHTML = '<span class="td-dong"><span class="td-van">' + T("td_van", { so: van }) + '</span><span class="td-cham" aria-hidden="true">' + cham + '</span><span class="td-sao">⭐ ' + sao + "</span></span>";
+  el.setAttribute("aria-label", chuDoc); el.setAttribute("role", "status");
+}
+let g2Van = 0;
+function moiG2() { g2Van++; return { luot: 0, sao: 0, kq: [], van: g2Van, thuTu: thuTuChat(G_LUOT) }; } // Cân bầu trời: 5 lượt, mỗi chất ít nhất 1 lượt
 let g1 = null;
 if ($("g1-mo")) $("g1-mo").addEventListener("click", function () { g1 = moiG1(); moMan("man-g1"); luotG1(); }); // thẻ game đã bỏ khỏi danh sách
 function luotG1() {
@@ -2401,6 +2427,7 @@ $("g1-tiep").addEventListener("click", function () {
 });
 function ketThuc(g, trang) {
   trang.xong = true; congSao(trang.sao);
+  if (g === "g2") veTienDo($("g2-luot"), trang.van, G_LUOT, -1, trang.kq || [], trang.sao, T("het_game", { sao: trang.sao, tong: G_LUOT }));
   $(g + "-kq").innerHTML = T("het_game", { sao: trang.sao, tong: g === "g1" ? G1_LUOT : G_LUOT });
   $(g + "-chon").innerHTML = "";
   if (g === "g1") $("g1-nghe").hidden = true; else { $("g2-de").textContent = ""; $("g2-bd").hidden = true; $("g2-ss").hidden = true; }
@@ -2434,7 +2461,7 @@ function capG2(d) { // 2 thành phố cùng khung, cùng dải (chất d), chên
 function luotG2() {
   g2.luot++; $("g2-tiep").hidden = true; $("g2-kq").innerHTML = "";
   if (g2.luot > G_LUOT) { ketThuc("g2", g2); return; }
-  $("g2-luot").textContent = T("luot", { so: g2.luot, tong: G_LUOT, sao: g2.sao });
+  veTienDo($("g2-luot"), g2.van, G_LUOT, g2.luot - 1, g2.kq, g2.sao, T("luot", { so: g2.luot, tong: G_LUOT, sao: g2.sao }));
   const c = capG2(g2.thuTu[g2.luot - 1]); g2.cau = c; const l = $("g2-chon"); l.innerHTML = "";
   $("g2-ss").hidden = true; $("g2-ss").innerHTML = "";
   if (!c) { $("g2-de").textContent = T("khong_khung"); $("g2-bd").hidden = true; return; }
@@ -2494,10 +2521,10 @@ function veSoSanhG2(c, dungLa) {
 function chonG2(chon, nut) {
   const c = g2.cau, dungLa = c.a.v > c.b.v ? c.a : c.b, dung = chon === dungLa;
   document.querySelectorAll("#g2-chon .g2-nut").forEach(function (b) { b.disabled = true; });
-  nut.classList.add(dung ? "dung" : "sai"); if (dung) g2.sao++;
+  nut.classList.add(dung ? "dung" : "sai"); if (dung) g2.sao++; g2.kq[g2.luot - 1] = dung;
   veBanDoG2(c, true); veSoSanhG2(c, dungLa);
   $("g2-kq").innerHTML = T(dung ? "dung" : "sai") + "<br>" + T("g2_dap_an", { a: "A", b: "B", la: lopMuc(c.a.v, c.d), ma: chuMuc(c.a.v, c.d), sa: soMuc(c.a.v), lb: lopMuc(c.b.v, c.d), mb: chuMuc(c.b.v, c.d), sb: soMuc(c.b.v) });
-  $("g2-luot").textContent = T("luot", { so: g2.luot, tong: G_LUOT, sao: g2.sao });
+  veTienDo($("g2-luot"), g2.van, G_LUOT, g2.luot - 1, g2.kq, g2.sao, T("luot", { so: g2.luot, tong: G_LUOT, sao: g2.sao }));
   $("g2-tiep").hidden = false;
 }
 $("g2-tiep").addEventListener("click", function () {
@@ -3318,6 +3345,7 @@ function apDung() {
   document.querySelectorAll("#jb-chip .chip").forEach(function (c) { const d = +c.dataset.d; c.innerHTML = iconChat(d) + T("ten_ngan")[d]; c.title = T("nhac_cu")[d]; });
   if ($("man-jb").classList.contains("hien")) { veJb(); $("jb-the").innerHTML = phanTichKhung(KHUNG[jbK]); }
   if ($("man-tt").classList.contains("hien")) veLaiTT();
+  if (g2 && $("g2-luot").innerHTML) veTienDo($("g2-luot"), g2.van, G_LUOT, g2.xong ? -1 : g2.luot - 1, g2.kq || [], g2.sao, T("luot", { so: g2.luot, tong: G_LUOT, sao: g2.sao }));
   if (g4 && $("g4-khien-chu")) $("g4-khien-chu").textContent = T("g4_khien", { so: g4.sao, tong: G4_LUOT });
   if ($("man-cay").classList.contains("hien")) veManCay();
   if (window.veChonG5) veChonG5();
